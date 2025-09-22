@@ -53,7 +53,7 @@ export class UserModalComponent {
     firstName: ['', [Validators.required, Validators.minLength(3)]],
     lastName: ['', [Validators.required, Validators.minLength(3)]],
     password: [''],
-    roles: [['user'], [Validators.required]]
+    roles: ['user', [Validators.required]]
   });
 
   constructor() {
@@ -78,7 +78,7 @@ export class UserModalComponent {
           firstName: this.user()?.firstName,
           lastName: this.user()?.lastName,
           password: '',
-          roles: userToEdit.roles
+          roles: userToEdit.roles.includes('admin') ? 'admin' : 'user'
         });
       }
     });
@@ -127,7 +127,7 @@ export class UserModalComponent {
       lastName: formValue.lastName,
       email: formValue.email,
       password: formValue.password,
-      roles: Array.isArray(formValue.roles) ? formValue.roles : [formValue.roles]
+      roles: [formValue.roles]
     };
 
     return this.userService.create(request);
@@ -137,6 +137,20 @@ export class UserModalComponent {
     const currentUser = this.user();
     if (!currentUser?.id) throw new Error('User ID required');
 
+    let userRoles = currentUser.roles;
+    const role = formValue.roles;
+    const includeAdmin = userRoles.includes('admin');
+
+    if (includeAdmin && role == "user") {
+      userRoles = userRoles.filter(role => role !== 'admin');
+
+      if (!userRoles.includes('user')) {
+        userRoles.push('user');
+      }
+    } else if (!includeAdmin && role == "admin") {
+      userRoles.push('admin');
+    }
+
     const request: UserRequest = {
       id: this.user()?.id,
       firstName: formValue.firstName,
@@ -144,7 +158,7 @@ export class UserModalComponent {
       username: this.user()?.username || formValue.firstName.toLowerCase() + formValue.lastName.toLowerCase(),
       email: formValue.email,
       password: formValue.password,
-      roles: Array.isArray(formValue.roles) ? formValue.roles : [formValue.roles]
+      roles: userRoles
     };
 
     if (formValue.password?.trim()) {
@@ -159,7 +173,7 @@ export class UserModalComponent {
   }
 
   private resetForm(): void {
-    this.userForm.reset({ roles: ['user'] });
+    this.userForm.reset({ roles: 'user' });
     this.showPassword.set(false);
     this.isSubmitting.set(false);
   }
