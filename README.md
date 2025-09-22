@@ -1,59 +1,122 @@
-# KjoCareFront
+# KJO Mind Care - Dashboard de Administración 🧠📊
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.3.
+Este dashboard fue desarrollado como parte del proyecto de bienestar emocional **KJO Mind Care**. Permite a administradores gestionar los recursos del sistema (blogs, usuarios, categorías, centros de salud, etc.) desde un entorno seguro, intuitivo y moderno.
 
-## Development server
+## 🛠 Tecnologías Usadas
 
-To start a local development server, run:
+- Angular 19 (con standalone components)
+
+- Keycloak
+
+- TailwindCSS + DaisyUI
+
+- OpenLayers (para mapas)
+
+- GitHub Actions (CI/CD)
+
+## 📦 Casos de Uso
+
+| Caso de Uso                    | Descripción                                                   | Rol           |
+|:-------------------------------|:--------------------------------------------------------------|:--------------|
+| Ver usuarios                   | Lista completa de usuarios registrados                        | Administrador |
+| Editar usuario                 | Actualizar nombre, estado o rol de un usuario                 | Administrador |
+| Mantener blog                  | Visualizar todos los blogs, crearlos, editarlos y eliminarlos | Administrador |
+| Mantener categorías            | Visualizar, crear, editar categorías                          | Administrador |
+| Mantener Comentarios           | Visualizar, crear, editar y eliminar comentarios de los blogs | Administrador |
+| Mantener centros de salud      | Visualizar, crear, editar y eliminar centros de salud         | Administrador |
+| Mantener estados de ánimo      | Visualizar, crear, editar estados de ánimo                    | Administrador |
+| Visualizar estadísticas de uso | Panel de métricas del sistema                                 | Administrador |
+
+## 🚀 Características del Dashboard
+
+- CRUD completo para blogs, usuarios, recursos de emergencia y centros de salud.
+
+- Mapa interactivo con OpenLayers para localizar centros de atención cercanos.
+
+- Visualización de métricas sobre el uso de la plataforma (usuarios, blogs, estados de ánimo).
+
+- Integración con Keycloak para la autenticación.
+
+- Interfaz responsiva y amigable.
+
+## ⚙️ Guia de instalación:
+### Requisitos Previos
+Antes de iniciar, asegúrate de contar con los siguientes requisitos instalados en tu sistema:
+
+- Docker: Para la creación y gestión de contenedores.
+- Docker Compose: Para la orquestación de múltiples contenedores.
+- Git: Para la clonación de los repositorios del proyecto.
+- Java 17 o superior: Requerido para ejecutar las aplicaciones Spring Boot.
+- Node.js y bun: Necesarios para el entorno de desarrollo de Angular.
+
+### Clonación de Repositorios
+
+Clona los repositorios del backend y frontend desde GitHub:
 
 ```bash
-ng serve
+git clone https://github.com/KJO-Tech/kjo-care-back.git
+git clone https://github.com/KJO-Tech/kjo-care-front.git
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Configuración de Variables de Entorno
 
-## Code scaffolding
+Es necesario configurar variables de entorno tanto para el backend como para el frontend. A continuación, se detallan las variables requeridas:
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+#### Backend (kjo-care-back)
 
-```bash
-ng generate component component-name
+Crea un archivo .env en la raíz del proyecto con el siguiente contenido:
+
+```text
+# PostgreSQL
+POSTGRES_DB=keycloak
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=securepassword123
+
+# Keycloak Admin
+KEYCLOAK_ADMIN=admin
+KEYCLOAK_ADMIN_PASSWORD=adminpassword123
+
+# Keycloak Client
+KEYCLOAK_SERVER_URL=http://keycloak:9090
+KEYCLOAK_REALM=kjo-care-realm-dev
+KEYCLOAK_MASTER_REALM=master
+KEYCLOAK_ADMIN_CLIENT=admin-cli
+KEYCLOAK_HOSTNAME=localhost
+KEYCLOAK_CLIENT_ID=kjo-care-client
+
+# Cloudinary
+CLOUDINARY_URL=
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Asegúrate de completar los valores de Cloudinary con tus credenciales correspondientes.
 
-```bash
-ng generate --help
+#### Frontend (kjo-care-front)
+
+En la raíz del proyecto frontend, crea un archivo .env con el siguiente contenido:
+
+```text
+NG_APP_API_URL=http://localhost:8080/api/mind
+NG_APP_KEYCLOAK_URL=http://localhost:9090
+NG_APP_KEYCLOAK_REALM=kjo-care-realm-dev
+NG_APP_KEYCLOAK_CLIENT_ID=kjo-care-client
 ```
 
-## Building
+### Levantamiento del Entorno
 
-To build the project run:
+Sigue los siguientes pasos para levantar el entorno completo:
 
-```bash
-ng build
-```
+1. **Backend:**
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+   - Navega al directorio del backend: `cd kjo-care-back`
+   - Construye y levanta los contenedores: `docker-compose up --build`
+   - Este comando iniciará los microservicios, Keycloak y PostgreSQL, configurando las bases de datos y el realm de Keycloak automáticamente.
 
-## Running unit tests
+2. **Frontend:**
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+   - En una nueva terminal, navega al directorio del frontend: `cd kjo-care-front`
+   - Instala las dependencias de Node.js: `bun install`
+   - Inicia la aplicación Angular: `ng serve`
+   - La aplicación estará disponible en http://localhost:4200.

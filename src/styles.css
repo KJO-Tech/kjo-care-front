@@ -4,8 +4,95 @@
 /* Importamos también el estilo del geocoder si es necesario */
 @import "leaflet-control-geocoder/dist/Control.Geocoder.css";
 
-@plugin "daisyui" {
-  themes: all;
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "cosmic-light";
+  default: true;
+  /*prefersdark: false;*/
+  /*color-scheme: "light";*/
+
+  /* Fondos */
+  --color-base-100: oklch(97% 0.01 280);
+  --color-base-200: oklch(93% 0.02 275);
+  --color-base-300: oklch(87% 0.03 270);
+  --color-base-content: oklch(22% 0.04 290);
+
+  /* Colores principales */
+  --color-primary: oklch(65% 0.20 290);
+  --color-primary-content: oklch(98% 0.01 20);
+  --color-secondary: oklch(72% 0.18 230);
+  --color-secondary-content: oklch(98% 0.01 18);
+  --color-accent: oklch(78% 0.16 340);
+  --color-accent-content: oklch(15% 0.01 16);
+
+  /* Neutral */
+  --color-neutral: oklch(42% 0.03 280);
+  --color-neutral-content: oklch(97% 0.01 280);
+
+  /* Estados */
+  --color-success: oklch(75% 0.16 170);
+  --color-success-content: oklch(98% 0.01 150);
+  --color-warning: oklch(80% 0.18 50);
+  --color-warning-content: oklch(15% 0.01 70);
+  --color-error: oklch(72% 0.18 350);
+  --color-error-content: oklch(98% 0.01 15);
+  --color-info: oklch(70% 0.20 220);
+  --color-info-content: oklch(98% 0.01 230);
+
+  /* Geometría juvenil */
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 3;
+  --noise: 1;
+}
+
+@plugin "daisyui/theme" {
+  name: "cosmic-dark";
+  default: false;
+  /*prefersdark: true;*/
+  /*color-scheme: "dark";*/
+
+  /* Fondos */
+  --color-base-100: oklch(8% 0.03 290);
+  --color-base-200: oklch(13% 0.04 285);
+  --color-base-300: oklch(20% 0.05 280);
+  --color-base-content: oklch(88% 0.02 280);
+
+  /* Colores principales */
+  --color-primary: oklch(75% 0.25 290);
+  --color-primary-content: oklch(98% 0.01 25);
+  --color-secondary: oklch(80% 0.22 230);
+  --color-secondary-content: oklch(98% 0.01 22);
+  --color-accent: oklch(85% 0.20 340);
+  --color-accent-content: oklch(15% 0.01 20);
+
+  /* Neutral */
+  --color-neutral: oklch(32% 0.03 280);
+  --color-neutral-content: oklch(88% 0.02 280);
+
+  /* Estados */
+  --color-success: oklch(82% 0.20 170);
+  --color-success-content: oklch(98% 0.01 150);
+  --color-warning: oklch(86% 0.22 50);
+  --color-warning-content: oklch(15% 0.01 70);
+  --color-error: oklch(80% 0.22 350);
+  --color-error-content: oklch(98% 0.01 15);
+  --color-info: oklch(78% 0.24 220);
+  --color-info-content: oklch(98% 0.01 230);
+
+  /* Geometría juvenil */
+  --radius-selector: 0.5rem;
+  --radius-field: 1rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 2px;
+  --depth: 3;
+  --noise: 1;
 }
 
 /* Estilos específicos para el mapa de Leaflet */

@@ -1,0 +1,9 @@
+<label class="swap swap-rotate">
+  <!-- this hidden checkbox controls the state -->
+  <input type="checkbox" class="theme-controller" value="cosmic-dark" [checked]="isDark()" (change)="toggleTheme()" />
+
+  <!-- sun icon -->
+  <i class="material-symbols-outlined !text-2xl swap-off">wb_sunny</i>
+  <!-- moon icon -->
+  <i class="material-symbols-outlined !text-2xl swap-on">dark_mode</i>
+</label>

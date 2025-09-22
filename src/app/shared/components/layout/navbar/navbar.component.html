@@ -13,62 +13,7 @@
 </div>
 
 <div class="navbar-end w-fit mr-3 flex items-center gap-3">
-  <div class="dropdown">
-    <div tabindex="0" role="button" class="btn">
-      Theme
-      <i class="material-symbols-outlined !text-xl">arrow_drop_down</i>
-    </div>
-    <ul tabindex="0" class="dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-2xl">
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Default"
-          value="dark" />
-      </li>
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Light"
-          value="light" />
-      </li>
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Caramellatte"
-          value="caramellatte" />
-      </li>
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Cupcake"
-          value="cupcake" />
-      </li>
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Valentine"
-          value="valentine" />
-      </li>
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller w-full btn btn-sm btn-ghost justify-start"
-          aria-label="Aqua"
-          value="aqua" />
-      </li>
-    </ul>
-  </div>
+  <app-theme-controller />
 
   <navbar-notifications />
 

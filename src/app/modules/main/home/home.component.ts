@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { KeycloakService } from '../../auth/services/keycloak.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -10,16 +9,6 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
-
- private keycloakService = inject(KeycloakService);
-
-  async logout() {
-    await this.keycloakService.logout();
-  }
-
-  async account() {
-    await this.keycloakService.goToAccountManagement();
-  }
+export default class HomeComponent {
 
 }
