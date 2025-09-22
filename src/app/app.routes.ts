@@ -15,7 +15,7 @@ export const routes: Routes = [
       { path: '', loadComponent: () => import('./modules/dashboard/dashboard-page.component') },
       {
         path: 'users',
-        loadComponent: () => import('./modules/user/user-page.component')
+        loadComponent: () => import('./modules/admin/user/user-page.component')
       },
       {
         path: 'emergency-resources',

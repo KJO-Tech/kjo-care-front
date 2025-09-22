@@ -1,0 +1,180 @@
+<div class="overflow-x-auto">
+  <table class="table table-zebra">
+    <thead class="bg-base-200">
+    <tr>
+      <th>
+        <div class="flex items-center gap-2">
+          <i class="material-icons-outlined text-sm">person</i>
+          Usuario
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center gap-2">
+          <i class="material-icons-outlined text-sm">email</i>
+          Correo
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center gap-2">
+          <i class="material-icons-outlined text-sm">security</i>
+          Rol
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center gap-2">
+          <i class="material-icons-outlined text-sm">toggle_on</i>
+          Estado
+        </div>
+      </th>
+      <th>
+        <div class="flex items-center gap-2">
+          <i class="material-icons-outlined text-sm">schedule</i>
+          Creado
+        </div>
+      </th>
+      <th class="text-center">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.id) {
+        @let isAdmin = user.roles.includes('admin');
+        @let isUser = user.roles.includes('user');
+
+        <tr class="hover">
+          <td>
+            <div class="flex items-center gap-3">
+              <!-- Avatar -->
+              <div class="avatar">
+                <div class="w-10 h-10 rounded-full">
+<!--                  @if (user.photoURL) {-->
+<!--                    <img [src]="user.photoURL" [alt]="user.displayName" class="w-full h-full object-cover" />-->
+<!--                  } @else {-->
+                    <div class="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white font-bold text-sm">
+                      {{ getInitials(user.firstName + " " + user.lastName) }}
+                    </div>
+<!--                  }-->
+                </div>
+              </div>
+              <div>
+                <div class="font-medium">{{ user.firstName + " " + user.lastName }}</div>
+              </div>
+            </div>
+          </td>
+
+          <td>
+            <div class="flex items-center gap-2">
+              <span>{{ user.email }}</span>
+<!--              @if (user.email.includes('admin')) {-->
+<!--                <div class="badge badge-xs badge-info">Admin Email</div>-->
+<!--              }-->
+            </div>
+          </td>
+
+          <!-- Rol -->
+          <td>
+            @if (isAdmin) {
+              <div class="badge badge-warning gap-1">
+                <i class="material-icons-outlined text-xs">admin_panel_settings</i>
+                Administrador
+              </div>
+            } @else if (isUser) {
+              <div class="badge badge-info gap-1">
+                <i class="material-icons-outlined text-xs">person</i>
+                Usuario
+              </div>
+            } @else {
+              <div class="badge badge-neutral gap-1">
+                <i class="material-icons-outlined text-xs">help</i>
+                Sin rol
+              </div>
+            }
+          </td>
+
+          <!-- Estado -->
+          <td>
+            @if (user.enabled) {
+              <div class="badge badge-success gap-1">
+                <i class="material-icons-outlined text-xs">check_circle</i>
+                Activo
+              </div>
+            } @else {
+              <div class="badge badge-error gap-1">
+                <i class="material-icons-outlined text-xs">cancel</i>
+                Inactivo
+              </div>
+            }
+          </td>
+
+          <!-- Fecha -->
+          <td>
+            <div class="text-sm">
+              {{ user.createdTimestamp | date:'dd/MM/yyyy' }}
+            </div>
+            <div class="text-xs text-base-content/50">
+              {{ user.createdTimestamp | date:'HH:mm' }}
+            </div>
+          </td>
+
+          <!-- Acciones -->
+          <td>
+            <div class="flex items-center justify-center gap-1">
+              <!-- Editar -->
+              <div class="tooltip" data-tip="Editar usuario">
+                <modal-open-button
+                  [modalName]="'modal_user_edit'"
+                  [type]="'icon'"
+                  classes="btn btn-ghost btn-sm"
+                  (click)="userService.setSelectedUser(user)"
+                >
+                  <i class="material-icons-outlined text-lg text-primary">edit</i>
+                </modal-open-button>
+              </div>
+
+              <!-- Toggle Estado -->
+              <div class="tooltip" [attr.data-tip]="user.enabled ? 'Desactivar' : 'Activar'">
+                <button
+                  class="btn btn-ghost btn-sm"
+                >
+<!--                  (click)="toggleUserStatus(user.id)"-->
+                  @if (user.enabled) {
+                    <i class="material-icons-outlined text-lg text-warning">visibility_off</i>
+                  } @else {
+                    <i class="material-icons-outlined text-lg text-success">visibility</i>
+                  }
+                </button>
+              </div>
+
+              @if (!isAdmin || (isAdmin && user.roles.length > 1)) {
+                <div class="tooltip" data-tip="Eliminar usuario">
+                  <modal-open-button
+                    [modalName]="'modal_user_delete'"
+                    [type]="'icon'"
+                    classes="btn btn-ghost btn-sm"
+                    (click)="userService.setSelectedUser(user)"
+                  >
+                    <i class="material-icons-outlined text-lg text-error">delete</i>
+                  </modal-open-button>
+                </div>
+              } @else {
+                <div class="tooltip" data-tip="No se puede eliminar el último administrador">
+                  <button class="btn btn-ghost btn-sm" disabled>
+                    <i class="material-icons-outlined text-lg text-base-300">delete</i>
+                  </button>
+                </div>
+              }
+            </div>
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="6" class="text-center py-8">
+            <div class="flex flex-col items-center gap-2">
+              <i class="material-icons-outlined text-4xl text-base-300">inbox</i>
+              <p class="text-base-content/70">No hay usuarios para mostrar</p>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

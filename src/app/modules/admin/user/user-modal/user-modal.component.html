@@ -1,0 +1,166 @@
+<dialog [id]="modalId()" class="modal">
+  <div class="modal-box max-h-11/12">
+    <!-- X BUTTON -->
+    <!--    <form method="dialog">-->
+    <!--      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">-->
+    <!--        <i class="material-icons-outlined !text-xl">close</i>-->
+    <!--      </button>-->
+    <!--    </form>-->
+
+    <!--    <h2 class="text-lg font-semibold">{{ title() }}</h2>-->
+
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h2 class="text-2xl font-bold text-base-content">{{ title() }}</h2>
+        <p class="text-sm text-base-content/70 mt-1">
+          {{
+            type() === "create"
+              ? "Añade un nuevo usuario al sistema"
+              : "Modifica la información del usuario"
+          }}
+        </p>
+      </div>
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost hover:btn-error">
+          <i class="material-icons-outlined !text-xl">close</i>
+        </button>
+      </form>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">First Name</legend>
+        <input
+          type="text"
+          class="input validator w-full"
+          formControlName="firstName"
+          placeholder="First Name"
+          minlength="3"
+          required
+          autocomplete="off"
+        />
+        <p class="validator-hint hidden">
+          {{ formUtils.getFieldError(userForm, 'firstName') }}
+        </p>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Last Name</legend>
+        <input
+          type="text"
+          class="input validator w-full"
+          formControlName="lastName"
+          placeholder="Last Name"
+          minlength="3"
+          required
+          autocomplete="off"
+        />
+        <p class="validator-hint hidden">
+          {{ formUtils.getFieldError(userForm, 'lastName') }}
+        </p>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Email</legend>
+        <input
+          type="email"
+          class="input validator w-full"
+          formControlName="email"
+          placeholder="Email"
+          minlength="3"
+          required
+          autocomplete="off"
+          pattern="{{ formUtils.emailPattern }}"
+        />
+        <p class="validator-hint hidden">
+          {{ formUtils.getFieldError(userForm, 'email') }}
+        </p>
+      </fieldset>
+
+      @if (type() == "create") {
+        <fieldset class="fieldset">
+          <legend class="fieldset-legend">Password</legend>
+          <label class="input validator w-full">
+            <input
+              type="{{ showPassword() ? 'text' : 'password' }}"
+              class=" w-full"
+              formControlName="password"
+              placeholder="Password"
+              minlength="3"
+              required
+              autocomplete="off"
+            />
+            <i (click)="toggleShowPassword()" class="material-icons-outlined !text-xl hover:cursor-pointer">
+              {{ showPassword() ? 'visibility_off' : 'visibility' }}
+            </i>
+          </label>
+          <p class="validator-hint hidden">
+            {{ formUtils.getFieldError(userForm, 'password') }}
+          </p>
+        </fieldset>
+      }
+
+      <fieldset class="fieldset">
+        <legend class="fieldset-legend">Rol</legend>
+        <select
+          class="select validator w-full"
+          formControlName="roles"
+          required
+          [ngClass]="{ '!input-error': formUtils.isValidField(userForm, 'roles') }"
+        >
+          <option disabled [ngValue]="''">-- Select role --</option>
+
+          <option value="user">Usuario</option>
+          <option value="admin">Administrador</option>
+        </select>
+        <p class="validator-hint hidden">
+          {{ formUtils.getFieldError(userForm, 'roles') }}
+        </p>
+      </fieldset>
+
+
+      <!--      <div class="modal-action mt-4">-->
+      <!--        <form method="dialog" class="space-x-2">-->
+      <!--          <button class="btn">Close</button>-->
+
+      <!--          <button-->
+      <!--            class="btn btn-primary"-->
+      <!--            [disabled]="userForm.invalid"-->
+      <!--            type="submit"-->
+      <!--            (click)="onSubmit()"-->
+      <!--          >-->
+      <!--            {{ submitButtonText() }}-->
+      <!--          </button>-->
+      <!--        </form>-->
+      <!--      </div>-->
+
+      <div class="modal-action pt-6 border-t border-base-300">
+        <button
+          type="button"
+          class="btn btn-outline"
+          onclick="this.closest('dialog').close()"
+          [disabled]="isSubmitting()"
+        >
+          Cancelar
+        </button>
+
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="userForm.invalid || isSubmitting()"
+          [class.loading]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <span class="loading loading-spinner loading-sm"></span>
+          }
+          {{ submitButtonText() }}
+        </button>
+      </div>
+    </form>
+
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+

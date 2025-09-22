@@ -12,28 +12,26 @@ export class UserService {
   private readonly baseUrl = `${environment.apiUrl}/api/mind/auth/users`;
   private http = inject(HttpClient);
 
-  private _selectedUser = signal<UserRequest | null>(null);
+  private _selectedUser = signal<UserResponse | null>(null);
 
-  get selectedUser(): UserRequest | null {
-    return this._selectedUser();
-  }
+  readonly selectedUser = this._selectedUser.asReadonly();
 
-  set selectedUser(user: UserRequest | null) {
+  setSelectedUser(user: UserResponse | null): void {
     this._selectedUser.set(user);
   }
 
-  selectUserResponse(user: UserResponse) {
-    const user2 = user as UserResponse;
-    this._selectedUser.set({
-      id: user2.id,
-      username: user2.username,
-      email: user2.email,
-      firstName: user2.firstName,
-      lastName: user2.lastName,
-      password: '',
-      roles: user2.roles
-    });
-  }
+  // selectUserResponse(user: UserResponse) {
+  //   const user2 = user as UserResponse;
+  //   this._selectedUser.set({
+  //     id: user2.id,
+  //     username: user2.username,
+  //     email: user2.email,
+  //     firstName: user2.firstName,
+  //     lastName: user2.lastName,
+  //     password: '',
+  //     roles: user2.roles
+  //   });
+  // }
 
   getAll(): Observable<UserResponse[]> {
     return this.http.get<UserResponse[]>(`${this.baseUrl}/listAll`);
@@ -44,7 +42,7 @@ export class UserService {
   }
 
   update(request: UserRequest) {
-    return this.http.put<void>(`${this.baseUrl}/update/${request.id}`, request);
+    return this.http.put(`${this.baseUrl}/update/${request.id}`, request);
   }
 
   delete(id: string) {

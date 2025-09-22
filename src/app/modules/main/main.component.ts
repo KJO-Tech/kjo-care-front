@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NotificationsComponent } from '../../shared/components/layout/notifications/notifications.component';
-import { ProfileButtonComponent } from '../../shared/components/layout/profile-button/profile-button.component';
 import { NgClass } from '@angular/common';
 import { ThemeControllerComponent } from '../../shared/components/layout/theme-controller/theme-controller.component';
 
@@ -11,7 +10,6 @@ import { ThemeControllerComponent } from '../../shared/components/layout/theme-c
     RouterLink,
     RouterLinkActive,
     NotificationsComponent,
-    ProfileButtonComponent,
     RouterOutlet,
     NgClass,
     ThemeControllerComponent
