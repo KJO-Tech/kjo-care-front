@@ -3,8 +3,9 @@
     <div class="bg-gradient-to-r from-primary to-accent text-primary-content px-2 pt-1 rounded-2xl align-baseline">
       <i class="material-symbols-outlined !text-2xl h-fit">favorite</i>
     </div>
-    <h2 class="text-2xl font-semibold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">¿Cómo te
-      sientes ahora?</h2>
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+      ¿Cómo te sientes ahora?
+    </h2>
   </div>
 
   <div class="flex items-center gap-3">
@@ -16,9 +17,9 @@
     } @else if (moods.error()) {
       <div class="alert alert-error my-3 flex-1">
         <i class="material-symbols-outlined !text-xl">error</i>
-        <span>Error al cargar los estados de ánimo. Por favor intenta de nuevo.</span>
-        <button class="btn btn-sm" (click)="reload()">
-          Retry
+        <span>Error al cargar los estadísticas. Por favor intenta de nuevo.</span>
+        <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+          <i class="material-symbols-outlined !text-xl">refresh</i>
         </button>
       </div>
     } @else {
@@ -39,7 +40,8 @@
     }
   </div>
 
-  <button class="btn bg-gradient-to-r from-primary to-accent border-none text-primary-content" (click)="redirectToMoodRegister()">
+  <button class="btn bg-gradient-to-r from-primary to-accent border-none text-primary-content"
+          (click)="redirectToMoodRegister()">
     <i class="material-icons-outlined !text-xl">add</i>
     Registrar estado de ánimo
   </button>

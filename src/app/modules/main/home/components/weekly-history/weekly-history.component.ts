@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { MoodStateResponse } from '../../../../../core/interfaces/mood-http.interface';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'home-weekly-history',
-  imports: [
-    NgClass
-  ],
+  imports: [],
   templateUrl: './weekly-history.component.html',
 })
 export class WeeklyHistoryComponent {
