@@ -1,0 +1,109 @@
+<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 *:!border-none *:!rounded-xl *:shadow-sm">
+  @if (stats.isLoading()) {
+    <div class="stat bg-primary *:text-primary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">bolt</i>
+      </div>
+      <div class="stat-value skeleton w-12 h-8 bg-base-200 my-2"></div>
+      <div class="stat-desc text-base">Racha días</div>
+    </div>
+
+    <div class="stat bg-accent *:text-error-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">favorite</i>
+      </div>
+      <div class="stat-value skeleton w-12 h-8 bg-base-200 my-2"></div>
+      <div class="stat-desc text-base">Promedio</div>
+    </div>
+
+    <div class="stat bg-secondary *:text-secondary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">target</i>
+      </div>
+      <div class="stat-value skeleton w-12 h-8 bg-base-200 my-2"></div>
+      <div class="stat-desc text-base">Metas hoy</div>
+    </div>
+
+    <div class="stat bg-success *:text-success-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">auto_awesome</i>
+      </div>
+      <div class="stat-value skeleton w-12 h-8 bg-base-200 my-2"></div>
+      <div class="stat-desc text-base">Puntos</div>
+    </div>
+  } @else if (stats.error()) {
+    <div class="stat bg-primary *:text-primary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">bolt</i>
+      </div>
+      <div class="stat-value">00</div>
+      <div class="stat-desc text-base">Racha días</div>
+    </div>
+
+    <div class="stat bg-accent *:text-error-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">favorite</i>
+      </div>
+      <div class="stat-value">00</div>
+      <div class="stat-desc text-base">Promedio</div>
+    </div>
+
+    <div class="stat bg-secondary *:text-secondary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">target</i>
+      </div>
+      <div class="stat-value">00</div>
+      <div class="stat-desc text-base">Metas hoy</div>
+    </div>
+
+    <div class="stat bg-success *:text-success-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">auto_awesome</i>
+      </div>
+      <div class="stat-value">00</div>
+      <div class="stat-desc text-base">Puntos</div>
+    </div>
+  } @else {
+    <div class="stat bg-primary *:text-primary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">bolt</i>
+      </div>
+      <div class="stat-value">7</div>
+      <div class="stat-desc text-base">Racha días</div>
+    </div>
+
+    <div class="stat bg-accent *:text-error-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">favorite</i>
+      </div>
+      <div class="stat-value">4.2</div>
+      <div class="stat-desc text-base">Promedio</div>
+    </div>
+
+    <div class="stat bg-secondary *:text-secondary-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">target</i>
+      </div>
+      <div class="stat-value">3/4</div>
+      <div class="stat-desc text-base">Metas hoy</div>
+    </div>
+
+    <div class="stat bg-success *:text-success-content justify-items-center">
+      <div class="stat-title">
+        <i class="material-symbols-outlined !text-3xl">auto_awesome</i>
+      </div>
+      <div class="stat-value">156</div>
+      <div class="stat-desc text-base">Puntos</div>
+    </div>
+  }
+</div>
+
+@if (stats.error()) {
+  <div class="alert alert-error my-3">
+    <i class="material-symbols-outlined !text-xl">error</i>
+    <span>Error al cargar los estadísticas. Por favor intenta de nuevo.</span>
+    <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+      <i class="material-symbols-outlined !text-xl">refresh</i>
+    </button>
+  </div>
+}
