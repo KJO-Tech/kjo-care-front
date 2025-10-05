@@ -1,0 +1,78 @@
+<div class="p-4 rounded-xl shadow-lg card space-y-3">
+  <div class="flex items-center gap-2">
+    <div class="bg-gradient-to-r from-error to-accent text-primary-content px-2 pt-1 rounded-2xl align-baseline">
+      <i class="material-symbols-outlined !text-2xl h-fit">trophy</i>
+    </div>
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-error to-accent text-transparent bg-clip-text">
+      Logros recientes
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 *:!rounded-xl *:shadow-sm *:p-5">
+    <div class="stat bg-primary/20 !border-2 !border-primary/50 *:text-primary justify-items-center">
+      <div class="stat-title mb-2">
+        <i class="material-symbols-outlined !text-3xl">mode_heat</i>
+      </div>
+      @if (stats.isLoading()) {
+        <div class="stat-value skeleton w-12 h-5 bg-base-200 my-2"></div>
+      } @else if (stats.error()) {
+        <div class="stat-value text-2xl font-bold">00</div>
+      } @else {
+        <div class="stat-value text-2xl font-bold">7</div>
+      }
+      <div class="stat-desc text-sm font-medium">Días seguidos</div>
+    </div>
+
+    <div class="stat bg-success/20 !border-2 !border-success/50 *:text-success justify-items-center">
+      <div class="stat-title mb-2">
+        <i class="material-symbols-outlined !text-3xl">local_activity</i>
+      </div>
+      @if (stats.isLoading()) {
+        <div class="stat-value skeleton w-12 h-5 bg-base-200 my-2"></div>
+      } @else if (stats.error()) {
+        <div class="stat-value text-2xl font-bold">00h</div>
+      } @else {
+        <div class="stat-value text-2xl font-bold">15h</div>
+      }
+      <div class="stat-desc text-sm font-medium">Ejercicios</div>
+    </div>
+
+    <div class="stat bg-info/20 !border-2 !border-info/50 *:text-info justify-items-center">
+      <div class="stat-title mb-2">
+        <i class="material-symbols-outlined !text-3xl">comment</i>
+      </div>
+      @if (stats.isLoading()) {
+        <div class="stat-value skeleton w-12 h-5 bg-base-200 my-2"></div>
+      } @else if (stats.error()) {
+        <div class="stat-value text-2xl font-bold">00</div>
+      } @else {
+        <div class="stat-value text-2xl font-bold">24</div>
+      }
+      <div class="stat-desc text-sm font-medium">Comentarios</div>
+    </div>
+
+    <div class="stat bg-error/20 !border-2 !border-error/50 *:text-error justify-items-center">
+      <div class="stat-title mb-2">
+        <i class="material-symbols-outlined !text-3xl">favorite</i>
+      </div>
+      @if (stats.isLoading()) {
+        <div class="stat-value skeleton w-12 h-5 bg-base-200 my-2"></div>
+      } @else if (stats.error()) {
+        <div class="stat-value text-2xl font-bold">00</div>
+      } @else {
+        <div class="stat-value text-2xl font-bold">89</div>
+      }
+      <div class="stat-desc text-sm font-medium">Likes dados</div>
+    </div>
+  </div>
+
+  @if (stats.error()) {
+    <div class="alert alert-error my-3">
+      <i class="material-symbols-outlined !text-xl">error</i>
+      <span>Error al cargar los logros. Por favor intenta de nuevo.</span>
+      <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+        <i class="material-symbols-outlined !text-xl">refresh</i>
+      </button>
+    </div>
+  }
+</div>
