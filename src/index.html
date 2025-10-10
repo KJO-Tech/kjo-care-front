@@ -23,17 +23,17 @@
   <meta name="theme-color" content="#9172FE">
 
   <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data: blob: https:;
-    frame-src 'none';
     script-src 'self' 'unsafe-inline';
     style-src 'self' 'unsafe-inline';
-    connect-src 'self' https://api.example.com;
   ">
+<!--    default-src 'self';-->
+<!--    frame-src 'none';-->
+<!--    connect-src 'self' http://localhost:8080;-->
 </head>
 <body>
-<app-root></app-root>
-<noscript>Please enable JavaScript to continue using this application.</noscript>
+  <app-root></app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
 </body>
 </html>
