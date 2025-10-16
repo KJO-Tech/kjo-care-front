@@ -10,7 +10,7 @@ export interface EmergencyResourceRequest {
 }
 
 export interface EmergencyResourceResponse {
-  id: number;
+  id: string;
   user: UserInfo;
   name: string;
   description: string;

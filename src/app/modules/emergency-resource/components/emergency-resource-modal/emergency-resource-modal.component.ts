@@ -40,7 +40,7 @@ export class EmergencyResourceModalComponent {
       this.title.set('Add new Emergency Resource');
       this.nameButton.set('Save');
 
-      if (this.resourceService.selectedResource().id > 0) {
+      if (this.resourceService.selectedResource().id.length > 0) {
         this.title.set('Edit Emergency Resource');
         this.nameButton.set('Update');
 
@@ -79,7 +79,7 @@ export class EmergencyResourceModalComponent {
       formData.append('videoUrl', video);
     }
 
-    if (this.resourceService.selectedResource().id > 0) {
+    if (this.resourceService.selectedResource().id.length > 0) {
       return this.resourceService.update(formData, this.resourceService.selectedResource().id).pipe()
         .subscribe({
           next: () => {

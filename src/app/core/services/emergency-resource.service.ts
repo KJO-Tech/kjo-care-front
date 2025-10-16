@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { EmergencyResourceResponse, EmergencyResourceStats } from '../interfaces/emergency-resource-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class EmergencyResourceService {
   private http = inject(HttpClient);
 
   selectedResource = signal<EmergencyResourceResponse>({
-    id: 0,
+    id: '',
     user: {
       id: '',
       username: '',
@@ -33,27 +34,27 @@ export class EmergencyResourceService {
     modifiedDate: ''
   });
 
-  getAll(): Observable<EmergencyResourceResponse[]> {
-    return this.http.get<EmergencyResourceResponse[]>(`${this.baseUrl}`);
+  getAll(): Observable<ApiResponse<EmergencyResourceResponse[]>> {
+    return this.http.get<ApiResponse<EmergencyResourceResponse[]>>(`${this.baseUrl}`);
   }
 
-  getStats(): Observable<EmergencyResourceStats> {
-    return this.http.get<EmergencyResourceStats>(`${this.baseUrl}/stats`);
+  getStats(): Observable<ApiResponse<EmergencyResourceStats>> {
+    return this.http.get<ApiResponse<EmergencyResourceStats>>(`${this.baseUrl}/stats`);
   }
 
-  getById(id: number): Observable<EmergencyResourceResponse> {
-    return this.http.get<EmergencyResourceResponse>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<ApiResponse<EmergencyResourceResponse>> {
+    return this.http.get<ApiResponse<EmergencyResourceResponse>>(`${this.baseUrl}/${id}`);
   }
 
-  create(request: FormData): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}`, request);
+  create(request: FormData): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.baseUrl}`, request);
   }
 
-  update(request: FormData, id: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, request);
+  update(request: FormData, id: string): Observable<ApiResponse<void>> {
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  delete(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
   }
 }

@@ -1,6 +1,8 @@
-import { Component, inject, input, ResourceRef } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { EmergencyResourceService } from '../../../../core/services/emergency-resource.service';
-import { EmergencyResourceStats } from '../../../../core/interfaces/emergency-resource-http.interface';
+import { ToastService } from '../../../../core/services/toast.service';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'resource-stats',
@@ -9,12 +11,17 @@ import { EmergencyResourceStats } from '../../../../core/interfaces/emergency-re
 })
 export class ResourceStatsComponent {
 
-  emergencyResourceService = inject(EmergencyResourceService);
+  resourceService = inject(EmergencyResourceService);
+  toastService = inject(ToastService);
 
-  stats = input.required<ResourceRef<EmergencyResourceStats | undefined>>();
+  stats = rxResource({
+    loader: () => this.resourceService.getStats().pipe(
+      map((response) => response.result)
+    )
+  });
 
   reload() {
-    this.stats().reload();
+    this.stats.reload();
   }
 
 }
