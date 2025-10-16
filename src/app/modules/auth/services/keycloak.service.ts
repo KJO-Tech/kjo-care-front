@@ -43,7 +43,7 @@ export class KeycloakService {
       const authenticated = await keycloak.init({
         onLoad: 'check-sso',
         checkLoginIframe: true,
-        checkLoginIframeInterval: 240 // segundos para refrescar la sesión
+        checkLoginIframeInterval: 200 // segundos para refrescar la sesión
       });
 
 
