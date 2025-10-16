@@ -20,7 +20,7 @@ import { Content } from '../../../../core/models/mood.model';
 export class MoodModalComponent implements OnInit {
   modalId = input<string>("mood_editor_modal");
   mood = input<Content>({
-    id: 0,
+    id: "",
     name: "",
     color: "#6d28d9",
     isActive: true,

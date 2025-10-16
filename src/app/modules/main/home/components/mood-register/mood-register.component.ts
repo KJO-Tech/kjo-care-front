@@ -1,8 +1,9 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { MoodStateService } from '../../../../../core/services/mood-tracking.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
 import { Router } from '@angular/router';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'home-mood-register',
@@ -17,21 +18,25 @@ export class MoodRegisterComponent {
   moodService = inject(MoodStateService);
 
   moods = rxResource({
-    loader: () => this.moodService.getAllMoods()
+    loader: () => {
+      return this.moodService.getAllMoods().pipe(
+        map((response) => response.result)
+      );
+    }
   });
 
-  moodSelected = signal<number>(0);
+  moodSelected = signal<string>('');
 
-  selectMood(id: number) {
+  selectMood(id: string) {
     if (this.moodSelected() === id) {
-      this.moodSelected.set(0);
+      this.moodSelected.set('');
     } else {
       this.moodSelected.set(id);
     }
   }
 
   redirectToMoodRegister() {
-    if (this.moodSelected() !== 0) {
+    if (this.moodSelected() !== '') {
       this.router.navigate(['/app/mood'], { queryParams: { moodId: this.moodSelected() } });
     }
   }

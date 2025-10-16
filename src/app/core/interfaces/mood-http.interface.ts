@@ -6,7 +6,7 @@ export interface MoodStateRequest {
 }
 
 export interface MoodStateResponse {
-  id: number,
+  id: string,
   name: string,
   description: string,
   image: string,

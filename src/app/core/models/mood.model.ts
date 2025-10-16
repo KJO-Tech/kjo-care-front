@@ -5,7 +5,7 @@ export interface Mood {
 }
 
 export interface Content {
-  id:          number;
+  id:          string;
   name:        string;
   description: string;
   state:       string;

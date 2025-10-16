@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { AnalyticsService } from '../../../core/services/analytics.service';
 import { MoodAnalyticsResponse } from '../../../core/interfaces/mood-analytics.response';
 import { rxResource } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs';
 
 interface MoodData {
   label: string;
@@ -53,7 +54,9 @@ export class MoodDistributionComponent implements OnInit {
 
   // Usar el mismo recurso de datos que el componente padre
   analyticsResource = rxResource({
-    loader: () => this.analyticsService.getMoodAnalytics(3) // 3 meses por defecto
+    loader: () => this.analyticsService.getMoodAnalytics(3).pipe(
+      map(response => response.result)
+    )
   });
 
   ngOnInit(): void {

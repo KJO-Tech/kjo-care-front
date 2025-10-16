@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { MoodAnalyticsResponse, MoodTrendsAnalysis } from '../interfaces/mood-analytics.response';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +11,10 @@ import { MoodAnalyticsResponse, MoodTrendsAnalysis } from '../interfaces/mood-an
 export class AnalyticsService {
   private http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/api/mind/mood-tracking`;
-  getMoodAnalytics(months: number = 3): Observable<MoodAnalyticsResponse> {
+
+  getMoodAnalytics(months: number = 3): Observable<ApiResponse<MoodAnalyticsResponse>> {
     return this.http
-      .get<MoodAnalyticsResponse>(
+      .get<ApiResponse<MoodAnalyticsResponse>>(
         `${this.baseUrl}/user-mood/statistics?month=${months}`,
       )
       .pipe(
@@ -31,8 +33,8 @@ export class AnalyticsService {
       );
   }
 
-  getMoodTrendsAnalysis(month: number = 3): Observable<MoodTrendsAnalysis> {
-    return this.http.get<MoodTrendsAnalysis>(`${this.baseUrl}/user-mood/trends-analysis?months=${month}`
+  getMoodTrendsAnalysis(month: number = 3): Observable<ApiResponse<MoodTrendsAnalysis>> {
+    return this.http.get<ApiResponse<MoodTrendsAnalysis>>(`${this.baseUrl}/user-mood/trends-analysis?months=${month}`
     ).pipe(
       tap((response) => console.log("Mood Trend Anlysis", response)),
       catchError((error) => {

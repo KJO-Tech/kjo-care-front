@@ -18,6 +18,7 @@ import {
   RouterLinkActive,
 } from '@angular/router';
 import { SettingAnalysisComponent } from "./setting-analysis/setting-analysis.component";
+import { map } from 'rxjs';
 
 interface Mood {
   label: string;
@@ -57,7 +58,9 @@ export class MoodAnalyticsComponent implements OnInit {
   private router = inject(Router);
 
   analyticsResource = rxResource({
-    loader: () => this.moodAnalytics.getMoodAnalytics(this.getMonthsForRange()),
+    loader: () => this.moodAnalytics.getMoodAnalytics(this.getMonthsForRange()).pipe(
+      map(response => response.result)
+    )
   });
 
   moods = signal<Mood[]>([]);
