@@ -1,1 +1,7 @@
-<p>mood works!</p>
+<div role="tablist" class="tabs tabs-box p-2 rounded-3xl">
+  @for (link of links; track $index) {
+    <a role="tab" class="tab text-base font-medium flex-1" [routerLink]="link.path" routerLinkActive="tab-active bg-gradient-to-r from-primary to-accent text-primary-content hover:text-primary-content">{{ link.name }}</a>
+  }
+</div>
+
+<router-outlet />
