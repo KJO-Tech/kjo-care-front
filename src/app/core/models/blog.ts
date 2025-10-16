@@ -1,7 +1,7 @@
 import { UserProfile } from './user-profile';
 
 export interface Blog {
-  id: number;
+  id: string;
   title: string;
   content: string;
   image?: string;
@@ -20,7 +20,7 @@ export enum Status {
 }
 
 export interface Category {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -34,6 +34,6 @@ export interface Reaction {
 
 export interface FilterDTO {
   search: string;
-  category: number;
+  category: string;
   status: string;
 }

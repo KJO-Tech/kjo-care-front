@@ -6,6 +6,7 @@ import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 
 import { Category } from '../models/blog';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,27 +17,27 @@ export class CategoryService {
   private http = inject(HttpClient);
 
   selectedCategory = signal<Category>({
-    id: 0,
+    id: '',
     name: ''
   });
 
-  findAll(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.baseUrl}`);
+  findAll(): Observable<ApiResponse<Category[]>> {
+    return this.http.get<ApiResponse<Category[]>>(`${this.baseUrl}`);
   }
 
-  getById(id: number): Observable<Category> {
-    return this.http.get<Category>(`${this.baseUrl}/${id}`);
+  getById(id: string): Observable<ApiResponse<Category>> {
+    return this.http.get<ApiResponse<Category>>(`${this.baseUrl}/${id}`);
   }
 
-  create(request: Category): Observable<Category> {
-    return this.http.post<Category>(`${this.baseUrl}`, request);
+  create(request: Category): Observable<ApiResponse<Category>> {
+    return this.http.post<ApiResponse<Category>>(`${this.baseUrl}`, request);
   }
 
-  update(request: Category, id: number): Observable<Category> {
-    return this.http.patch<Category>(`${this.baseUrl}/${id}`, request);
+  update(request: Category, id: string): Observable<ApiResponse<Category>> {
+    return this.http.patch<ApiResponse<Category>>(`${this.baseUrl}/${id}`, request);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  delete(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
   }
 }

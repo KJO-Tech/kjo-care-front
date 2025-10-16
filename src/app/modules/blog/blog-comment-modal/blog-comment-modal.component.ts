@@ -31,7 +31,7 @@ export class BlogCommentModalComponent {
       this.title.set('Add new comment');
       this.nameButton.set('Save');
 
-      if (this.commentService._selectedComment().id > 0) {
+      if (this.commentService._selectedComment().id.length > 0) {
         this.title.set('Edit comment');
         this.nameButton.set('Update');
 
@@ -40,7 +40,7 @@ export class BlogCommentModalComponent {
         });
       }
 
-      if (this.commentService._selectedComment().commentParentId && this.commentService._selectedComment().id < 1) {
+      if (this.commentService._selectedComment().commentParentId && this.commentService._selectedComment().id.length === 0) {
         this.title.set('Reply to comment');
         this.nameButton.set('Reply');
         this.commentForm.patchValue({
@@ -64,7 +64,7 @@ export class BlogCommentModalComponent {
       commentParentId: this.commentService.selectedComment.commentParentId
     };
 
-    if (this.commentService.selectedComment.id > 0) {
+    if (this.commentService.selectedComment.id.length > 0) {
       return this.commentService.update(request, this.commentService.selectedComment.id).pipe()
         .subscribe({
           next: () => {

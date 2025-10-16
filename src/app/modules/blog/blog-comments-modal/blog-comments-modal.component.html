@@ -38,7 +38,7 @@
               [modalName]="'modal_blog_comment'"
               [classes]="'btn btn-ghost btn-link'"
               (click)="commentService.selectedComment = {
-                id: 0,
+                id: '',
                 content: '',
                 blogId: blogService.selectedBlog.blog.id,
                 commentParentId: null,

@@ -7,6 +7,7 @@ import { CommentService } from '../../../core/services/comment.service';
 import { ToastService } from '../../../core/services/toast.service';
 import { ModalOpenButtonComponent } from '../../../shared/components/modal-open-button/modal-open-button.component';
 import { BlogCommentModalComponent } from '../blog-comment-modal/blog-comment-modal.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'blog-comments-modal',
@@ -25,7 +26,9 @@ export class BlogCommentsModalComponent {
 
   readonly blog = rxResource({
     request: () => this.blogService.selectedBlog.blog.id,
-    loader: ({ request }) => this.blogService.getById(request)
+    loader: ({ request }) => this.blogService.getById(request).pipe(
+      map(response => response.result)
+    )
   });
 
   deleteComment() {

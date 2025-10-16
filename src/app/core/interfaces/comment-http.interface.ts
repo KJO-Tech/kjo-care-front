@@ -1,12 +1,12 @@
 export interface CommentRequest {
-  id: number;
+  id: string;
   content: string;
-  blogId: number;
-  commentParentId: number | null;
+  blogId: string;
+  commentParentId: string | null;
 }
 
 export interface CommentResponse {
-  id: number;
+  id: string;
   blogId: number;
   userId: number;
   content: string;

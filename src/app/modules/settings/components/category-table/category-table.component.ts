@@ -6,6 +6,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { ToastService } from '../../../../core/services/toast.service';
 import { DialogComponent } from '../../../../shared/components/dialog/dialog.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'category-table',
@@ -21,7 +22,9 @@ export class CategoryTableComponent {
   private toastService = inject(ToastService);
 
   categories = rxResource({
-    loader: () => this.categoryService.findAll()
+    loader: () => this.categoryService.findAll().pipe(
+      map(response => response.result)
+    )
   });
 
   constructor() {

@@ -37,7 +37,7 @@ export class CategoryModalComponent {
       this.title.set('Add new category');
       this.nameButton.set('Save');
 
-      if (this.categoryService.selectedCategory().id > 0) {
+      if (this.categoryService.selectedCategory().id.length > 0) {
         this.title.set('Edit Category');
         this.nameButton.set('Update');
       }
@@ -60,7 +60,7 @@ export class CategoryModalComponent {
       name: this.categoryForm.value.name!
     };
 
-    if (this.categoryService.selectedCategory().id > 0) {
+    if (this.categoryService.selectedCategory().id.length > 0) {
       this.categoryService.update(request, request.id).subscribe({
         next: () => {
           this.toastService.addToast({
