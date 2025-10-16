@@ -21,6 +21,7 @@ import { HealthCenterModalComponent } from './health-center-modal/health-center-
 import { HealthCenterDetailComponent } from './health-center-detail/health-center-detail.component';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { ModalOpenButtonComponent } from '../../shared/components/modal-open-button/modal-open-button.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-health-center-map',
@@ -35,7 +36,7 @@ import { ModalOpenButtonComponent } from '../../shared/components/modal-open-but
   ]
 })
 export default class HealthCenterMapComponent implements OnInit {
-  map!: Map;
+  olMap!: Map;
   popup!: Overlay;
   popupVisible = signal(false);
   selectedCenter = signal<any>(null);
@@ -51,7 +52,9 @@ export default class HealthCenterMapComponent implements OnInit {
   toastService = inject(ToastService);
 
   centers = rxResource({
-    loader: () => this.centersService.getAll()
+    loader: () => this.centersService.getAll().pipe(
+      map(response => response.result)
+    )
   });
 
   constructor() {
@@ -85,7 +88,7 @@ export default class HealthCenterMapComponent implements OnInit {
 
   initMap() {
     // Centro inicial en Lima, Perú
-    this.map = new Map({
+    this.olMap = new Map({
       target: 'map',
       layers: [new TileLayer({ source: new OSM() })],
       view: new View({
@@ -126,11 +129,11 @@ export default class HealthCenterMapComponent implements OnInit {
       positioning: 'bottom-center'
     });
 
-    this.map.addOverlay(this.popup);
+    this.olMap.addOverlay(this.popup);
 
     // Evento para mostrar el popup al hacer clic en un marcador
-    this.map.on('click', (evt) => {
-      const feature = this.map.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
+    this.olMap.on('click', (evt) => {
+      const feature = this.olMap.forEachFeatureAtPixel(evt.pixel, (feature) => feature);
       if (feature) {
         const geometry = feature.getGeometry() as Point;
         if (!geometry) return;
@@ -269,14 +272,14 @@ export default class HealthCenterMapComponent implements OnInit {
     });
 
     // Limpiar capas anteriores y añadir las nuevas
-    this.map.getLayers().clear();
-    this.map.addLayer(new TileLayer({ source: new OSM() }));
-    this.map.addLayer(vectorLayer);
+    this.olMap.getLayers().clear();
+    this.olMap.addLayer(new TileLayer({ source: new OSM() }));
+    this.olMap.addLayer(vectorLayer);
 
     // Añadir cursor pointer al pasar sobre los marcadores
-    this.map.on('pointermove', (e) => {
-      const pixel = this.map.getEventPixel(e.originalEvent);
-      const hit = this.map.hasFeatureAtPixel(pixel);
+    this.olMap.on('pointermove', (e) => {
+      const pixel = this.olMap.getEventPixel(e.originalEvent);
+      const hit = this.olMap.hasFeatureAtPixel(pixel);
       const mapElement = document.getElementById('map');
       if (mapElement) {
         mapElement.style.cursor = hit ? 'pointer' : '';
@@ -286,7 +289,7 @@ export default class HealthCenterMapComponent implements OnInit {
     // Ajustar la vista para mostrar todos los marcadores
     if (features.length > 0) {
       const extent = vectorSource.getExtent();
-      this.map.getView().fit(extent, {
+      this.olMap.getView().fit(extent, {
         padding: [50, 50, 50, 50],
         maxZoom: 15
       });
@@ -385,9 +388,9 @@ export default class HealthCenterMapComponent implements OnInit {
         this.filteredCenters.set(nearbyCenters);
       }
 
-      // Centrar el mapa en la ubicación del usuario
-      this.map.getView().setCenter(fromLonLat([userCoords.longitude, userCoords.latitude]));
-      this.map.getView().setZoom(14);
+      // Centrar el olMapa en la ubicación del usuario
+      this.olMap.getView().setCenter(fromLonLat([userCoords.longitude, userCoords.latitude]));
+      this.olMap.getView().setZoom(14);
 
     } catch (error) {
       console.error('Error al obtener la ubicación del usuario:', error);

@@ -9,7 +9,7 @@ export interface HealthCenterRequest {
 }
 
 export interface HealthCenterResponse extends HealthCenterRequest {
-  id: number;
+  id: string;
   user: UserInfo;
   status: string;
   createdDate: string;

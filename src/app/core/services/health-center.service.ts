@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { HealthCenterRequest, HealthCenterResponse } from '../interfaces/health-center-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,20 +21,21 @@ export class HealthCenterService {
     phone: '',
     latitude: 0,
     longitude: 0,
-    id: 0,
+    id: '',
     user: {
       firstName: '',
       lastName: '',
-      username: '',
+      username: ''
     },
     status: '',
     createdDate: '',
     modifiedDate: ''
   });
 
-  getAll(): Observable<HealthCenterResponse[]> {
-    return this.http.get<HealthCenterResponse[]>(`${this.baseUrl}/all`);
+  getAll(): Observable<ApiResponse<HealthCenterResponse[]>> {
+    return this.http.get<ApiResponse<HealthCenterResponse[]>>(`${this.baseUrl}/all`);
   }
+
   //
   // getStats(): Observable<EmergencyResourceStats> {
   //   return this.http.get<EmergencyResourceStats>(`${this.baseUrl}/stats`);
@@ -43,16 +45,16 @@ export class HealthCenterService {
   //   return this.http.get<EmergencyResourceResponse>(`${this.baseUrl}/${id}`);
   // }
 
-  create(request: HealthCenterRequest): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}?name=${request.name}&address=${request.address}&phone=${request.phone}&latitude=${request.latitude}&longitude=${request.longitude}`, request);
+  create(request: HealthCenterRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.baseUrl}?name=${request.name}&address=${request.address}&phone=${request.phone}&latitude=${request.latitude}&longitude=${request.longitude}`, request);
   }
 
-  update(request: HealthCenterRequest, id: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}?name=${request.name}&address=${request.address}&phone=${request.phone}&latitude=${request.latitude}&longitude=${request.longitude}`, request);
+  update(request: HealthCenterRequest, id: string): Observable<ApiResponse<void>> {
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/${id}?name=${request.name}&address=${request.address}&phone=${request.phone}&latitude=${request.latitude}&longitude=${request.longitude}`, request);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  delete(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
   }
 
   async getLocalData() {
@@ -67,11 +69,11 @@ export class HealthCenterService {
       phone: '',
       latitude: 0,
       longitude: 0,
-      id: 0,
+      id: '',
       user: {
         firstName: '',
         lastName: '',
-        username: '',
+        username: ''
       },
       status: '',
       createdDate: '',

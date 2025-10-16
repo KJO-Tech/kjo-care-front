@@ -56,7 +56,7 @@ export class HealthCenterModalComponent implements OnInit {
       this.nameButton.set('Guardar');
 
       const selectedCenter = this.healthCenterService.selectedCenter();
-      if (selectedCenter.id > 0) {
+      if (selectedCenter.id.length > 0) {
         this.title.set('Editar centro de salud');
         this.nameButton.set('Actualizar');
       }
@@ -101,7 +101,7 @@ export class HealthCenterModalComponent implements OnInit {
     let lat = this.healthCenterForm.value.latitude || -12.0464;
     let lng = this.healthCenterForm.value.longitude || -77.0428;
 
-    if (this.healthCenterService.selectedCenter().id === 0) {
+    if (this.healthCenterService.selectedCenter().id.length === 0) {
       const userCoords = await this.getUserLocation();
       lat = userCoords.latitude;
       lng = userCoords.longitude;
@@ -134,7 +134,7 @@ export class HealthCenterModalComponent implements OnInit {
     });
 
     // Añadir marcador inicial si hay coordenadas
-    if (lat && lng && this.healthCenterService.selectedCenter().id > 0) {
+    if (lat && lng && this.healthCenterService.selectedCenter().id.length > 0) {
       this.addMarker(lat, lng);
     }
 
@@ -192,7 +192,7 @@ export class HealthCenterModalComponent implements OnInit {
       longitude: this.healthCenterForm.value.longitude!
     };
 
-    if (this.healthCenterService.selectedCenter().id > 0) {
+    if (this.healthCenterService.selectedCenter().id.length > 0) {
       // Actualizar centro de salud existente
 
       this.healthCenterService.update(request, this.healthCenterService.selectedCenter().id).subscribe({
