@@ -10,9 +10,9 @@ import { map } from 'rxjs';
   imports: [
     NgClass
   ],
-  templateUrl: './mood-register.component.html'
+  templateUrl: './home-mood-register.component.html'
 })
-export class MoodRegisterComponent {
+export class HomeMoodRegisterComponent {
 
   router = inject(Router);
   moodService = inject(MoodStateService);
