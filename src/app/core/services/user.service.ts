@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserProfile } from '../models/user-profile';
 import { Observable } from 'rxjs';
 import { UserRequest, UserResponse } from '../interfaces/user-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -33,19 +34,19 @@ export class UserService {
   //   });
   // }
 
-  getAll(): Observable<UserResponse[]> {
-    return this.http.get<UserResponse[]>(`${this.baseUrl}/listAll`);
+  getAll(): Observable<ApiResponse<UserResponse[]>> {
+    return this.http.get<ApiResponse<UserResponse[]>>(`${this.baseUrl}/listAll`);
   }
 
   create(request: UserRequest) {
-    return this.http.post(`${this.baseUrl}/register`, request);
+    return this.http.post<ApiResponse<void>>(`${this.baseUrl}/register`, request);
   }
 
   update(request: UserRequest) {
-    return this.http.put(`${this.baseUrl}/update/${request.id}`, request);
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/update/${request.id}`, request);
   }
 
   delete(id: string) {
-    return this.http.delete<void>(`${this.baseUrl}/delete/${id}`);
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/delete/${id}`);
   }
 }

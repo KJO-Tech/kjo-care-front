@@ -7,6 +7,7 @@ import { UserModalComponent } from './user-modal/user-modal.component';
 import { UserRequest, UserResponse } from '../../../core/interfaces/user-http.interface';
 import { DialogComponent } from '../../../shared/components/dialog/dialog.component';
 import { ToastService } from '../../../core/services/toast.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -28,7 +29,9 @@ export default class UserPageComponent {
   readonly showDisabled = signal<boolean>(false);
 
   users = rxResource({
-    loader: () => this.userService.getAll()
+    loader: () => this.userService.getAll().pipe(
+      map(response => response.result)
+    )
   });
 
   readonly filteredUsers = computed(() => {

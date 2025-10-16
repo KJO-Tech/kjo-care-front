@@ -12,6 +12,7 @@ import {
   EmergencyResourceModalComponent
 } from './components/emergency-resource-modal/emergency-resource-modal.component';
 import { ToastService } from '../../core/services/toast.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-emergency-resource',
@@ -30,16 +31,13 @@ export default class EmergencyResourceComponent {
   toastService = inject(ToastService);
 
   resources = rxResource({
-    loader: () => this.resourceService.getAll()
-  });
-
-  stats = rxResource({
-    loader: () => this.resourceService.getStats()
+    loader: () => this.resourceService.getAll().pipe(
+      map(response => response.result)
+    )
   });
 
   reload() {
     this.resources.reload();
-    this.stats.reload();
   }
 
   deleteResource() {
@@ -65,7 +63,7 @@ export default class EmergencyResourceComponent {
 
   clearSelectedResource() {
     this.resourceService.selectedResource.set({
-      id: 0,
+      id: '',
       user: {
         id: '',
         username: '',

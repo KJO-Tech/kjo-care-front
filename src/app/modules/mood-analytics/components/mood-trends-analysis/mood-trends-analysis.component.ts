@@ -3,6 +3,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { AnalyticsService } from '../../../../core/services/analytics.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'trends-analysis',
@@ -17,7 +18,9 @@ export class MoodTrendsAnalysisComponent {
 
   loadTrendsAnalysis = rxResource({
     request: () => ({ month: this.month() }),
-    loader: ({ request }) => this.analyticsService.getMoodTrendsAnalysis(request.month)
+    loader: ({ request }) => this.analyticsService.getMoodTrendsAnalysis(request.month).pipe(
+      map(response => response.result)
+    )
   });
 
   timeOptions = [

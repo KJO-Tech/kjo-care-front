@@ -14,6 +14,7 @@ import { blogs } from '../../shared/utils/local-data';
 import { BlogResponse } from '../../core/interfaces/blog-http.interface';
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { BlogCommentsModalComponent } from './blog-comments-modal/blog-comments-modal.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-blog',
@@ -36,10 +37,14 @@ export default class BlogPageComponent {
   toastService = inject(ToastService);
 
   blogs = rxResource({
-    loader: () => this.blogService.findAll()
+    loader: () => this.blogService.findAll().pipe(
+      map(response => response.result)
+    )
   });
   _categories = rxResource({
-    loader: () => this.categoryService.findAll()
+    loader: () => this.categoryService.findAll().pipe(
+      map(response => response.result)
+    )
   });
 
   categories = computed<Category[]>(() => {
@@ -54,7 +59,7 @@ export default class BlogPageComponent {
       temporal = temporal.filter(blog => blog.blog.title.toLowerCase().includes(filter.search.toLowerCase()));
     }
 
-    if (filter.category > 0) {
+    if (filter.category.length > 0) {
       temporal = temporal.filter(blog => blog.blog.category?.id === filter.category);
     }
 
@@ -67,7 +72,7 @@ export default class BlogPageComponent {
 
   private filter = signal<FilterDTO>({
     search: '',
-    category: 0,
+    category: '',
     status: Status.Published
   });
 

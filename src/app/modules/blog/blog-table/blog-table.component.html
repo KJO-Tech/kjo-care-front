@@ -2,7 +2,7 @@
   <table class="table">
     <thead>
     <tr>
-      <th></th>
+      <!--      <th></th>-->
       <th class="">Title</th>
       <th>Author</th>
       <th>Category</th>
@@ -16,7 +16,7 @@
     <tbody>
       @for (blog of blogs(); track $index) {
         <tr class="hover:bg-base-200">
-          <td>{{ blog.blog.id }}</td>
+          <!--          <td>{{ blog.blog.id }}</td>-->
           <td class="min-w-64">
             <p class="line-clamp-2 text-ellipsis text-wrap">
               {{ blog.blog.title }}

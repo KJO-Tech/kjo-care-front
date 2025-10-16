@@ -39,9 +39,13 @@ export class KeycloakService {
     const keycloak = this.initKeycloak();
 
     try {
+      // Solo inicializa si el usuario está autenticado
       const authenticated = await keycloak.init({
-        onLoad: 'login-required',
+        onLoad: 'check-sso',
+        checkLoginIframe: true,
+        checkLoginIframeInterval: 200 // segundos para refrescar la sesión
       });
+
 
       this._isLoading.set(false)
 
@@ -65,6 +69,10 @@ export class KeycloakService {
 
   login() {
     return this.keycloak.login();
+  }
+
+  register() {
+    return this.keycloak.register();
   }
 
   logout() {

@@ -16,7 +16,7 @@ export interface BlogDetailResponse {
 }
 
 export interface CommentSummary {
-  id: number;
+  id: string;
   userId: UserInfo;
   content: string;
   date: string;

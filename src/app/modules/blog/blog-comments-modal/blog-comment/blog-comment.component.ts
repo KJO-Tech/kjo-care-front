@@ -15,7 +15,7 @@ import { CommentRequest } from '../../../../core/interfaces/comment-http.interfa
 })
 export class BlogCommentComponent {
   readonly comment = input.required<CommentSummary>();
-  readonly commentParentId = input.required<number | null>();
+  readonly commentParentId = input.required<string | null>();
 
   readonly blogService = inject(BlogService);
 
@@ -38,14 +38,14 @@ export class BlogCommentComponent {
         };
       case 'reply':
         return {
-          id: 0,
+          id: '',
           content: '',
           blogId: this.blogService.selectedBlog.blog.id,
           commentParentId: this.comment().id
         };
       case 'create':
         return {
-          id: 0,
+          id: '',
           content: this.comment().content,
           blogId: this.blogService.selectedBlog.blog.id,
           commentParentId: null

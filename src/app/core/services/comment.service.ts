@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 
 import { Category } from '../models/blog';
 import { CommentRequest, CommentResponse } from '../interfaces/comment-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,9 @@ export class CommentService {
   private http = inject(HttpClient);
 
   readonly _selectedComment = signal<CommentRequest>({
-    id: 0,
+    id: '',
     content: '',
-    blogId: 0,
+    blogId: '',
     commentParentId: null
   });
 
@@ -31,21 +32,21 @@ export class CommentService {
     this._selectedComment.set(comment);
   }
 
-  create(request: CommentRequest): Observable<CommentResponse> {
+  create(request: CommentRequest): Observable<ApiResponse<CommentResponse>> {
     if (!request.commentParentId) {
-      return this.http.post<CommentResponse>(`${this.baseUrl}?blogId=${request.blogId}&content=${request.content}`, null);
+      return this.http.post<ApiResponse<CommentResponse>>(`${this.baseUrl}?blogId=${request.blogId}&content=${request.content}`, null);
     }
-    return this.http.post<CommentResponse>(`${this.baseUrl}?blogId=${request.blogId}&commentParentId=${request.commentParentId}&content=${request.content}`, request);
+    return this.http.post<ApiResponse<CommentResponse>>(`${this.baseUrl}?blogId=${request.blogId}&commentParentId=${request.commentParentId}&content=${request.content}`, request);
   }
 
-  update(request: CommentRequest, id: number): Observable<CommentResponse> {
+  update(request: CommentRequest, id: string): Observable<ApiResponse<CommentResponse>> {
     if (!request.commentParentId) {
-      return this.http.put<CommentResponse>(`${this.baseUrl}/${id}?blogId=${request.blogId}&content=${request.content}`, null);
+      return this.http.put<ApiResponse<CommentResponse>>(`${this.baseUrl}/${id}?blogId=${request.blogId}&content=${request.content}`, null);
     }
-    return this.http.put<CommentResponse>(`${this.baseUrl}/${id}?blogId=${request.blogId}&commentParentId=${request.commentParentId}&content=${request.content}`, request);
+    return this.http.put<ApiResponse<CommentResponse>>(`${this.baseUrl}/${id}?blogId=${request.blogId}&commentParentId=${request.commentParentId}&content=${request.content}`, request);
   }
 
-  delete(id: number): Observable<void> {
+  delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

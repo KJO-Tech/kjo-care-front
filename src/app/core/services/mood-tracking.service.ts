@@ -7,6 +7,7 @@ import type {
   MoodStateRequest,
   MoodStateResponse,
 } from '../interfaces/mood-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,8 @@ export class MoodStateService {
 
   private moodStates = signal<Content[]>([]);
 
-  getAllMoods(): Observable<Mood> {
-    return this.http.get<Mood>(`${this.baseUrl}/mood-tracking`).pipe(
+  getAllMoods(): Observable<ApiResponse<Mood>> {
+    return this.http.get<ApiResponse<Mood>>(`${this.baseUrl}/mood-tracking`).pipe(
       catchError((error) => {
         console.error('Error al obtener los estados de ánimo:', error);
         return throwError(
@@ -28,20 +29,22 @@ export class MoodStateService {
     );
   }
 
-  addMoodState(mood: MoodStateRequest): Observable<MoodStateResponse> {
+  addMoodState(mood: MoodStateRequest): Observable<ApiResponse<MoodStateResponse>> {
     return this.http
-      .post<MoodStateResponse>(`${this.baseUrl}/mood-tracking`, mood)
+      .post<ApiResponse<MoodStateResponse>>(`${this.baseUrl}/mood-tracking`, mood)
       .pipe(
         tap((response) => {
+          const result = response.result
+
           this.moodStates.update((states) => [
             ...states,
             {
-              id: response.id,
-              name: response.name,
-              description: response.description,
-              image: response.image,
-              color: response.color,
-              isActive: response.isActive,
+              id: result.id,
+              name: result.name,
+              description: result.description,
+              image: result.image,
+              color: result.color,
+              isActive: result.isActive,
               state: 'active',
             },
           ]);
@@ -56,23 +59,25 @@ export class MoodStateService {
   }
 
   updateMoodState(
-    id: number,
+    id: string,
     mood: MoodStateRequest,
-  ): Observable<MoodStateResponse> {
+  ): Observable<ApiResponse<MoodStateResponse>> {
     return this.http
-      .patch<MoodStateResponse>(`${this.baseUrl}/mood-tracking/${id}`, mood)
+      .patch<ApiResponse<MoodStateResponse>>(`${this.baseUrl}/mood-tracking/${id}`, mood)
       .pipe(
         tap((response) => {
+          const result = response.result
+
           this.moodStates.update((states) =>
             states.map((item) =>
               item.id === id
                 ? {
                     ...item,
-                    name: response.name,
-                    description: response.description,
-                    image: response.image,
-                    color: response.color,
-                    isActive: response.isActive,
+                    name: result.name,
+                    description: result.description,
+                    image: result.image,
+                    color: result.color,
+                    isActive: result.isActive,
                   }
                 : item,
             ),
@@ -88,9 +93,9 @@ export class MoodStateService {
       );
   }
 
-  toggleMoodState(id: number): Observable<MoodStateResponse> {
+  toggleMoodState(id: string): Observable<ApiResponse<MoodStateResponse>> {
     return this.http
-      .patch<MoodStateResponse>(
+      .patch<ApiResponse<MoodStateResponse>>(
         `${this.baseUrl}/mood-tracking/${id}/toggle-status`,
         {},
       )
@@ -108,8 +113,8 @@ export class MoodStateService {
       );
   }
 
-  removeMoodState(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/mood-tracking/${id}`).pipe(
+  removeMoodState(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/mood-tracking/${id}`).pipe(
       catchError((error) => {
         console.error(
           `Error al eliminar el estado de animo de id : ${id}`,

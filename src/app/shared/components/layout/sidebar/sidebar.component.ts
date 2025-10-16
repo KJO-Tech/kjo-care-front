@@ -40,9 +40,9 @@ export class SidebarComponent {
       name: 'Settings',
       path: '/dashboard/settings'
     },
-    {
-      name: 'Audit logs',
-      path: '/dashboard/audit-logs'
-    }
+    // {
+    //   name: 'Audit logs',
+    //   path: '/dashboard/audit-logs'
+    // }
   ];
 }

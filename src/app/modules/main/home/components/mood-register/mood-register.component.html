@@ -29,12 +29,17 @@
           [style.backgroundColor]="mood.color"
           [ngClass]="{
             '': moodSelected() === mood.id,
-            'opacity-50': moodSelected() !== mood.id && moodSelected() !== 0,
+            'opacity-50': moodSelected() !== mood.id && moodSelected() !== '',
           }"
           (click)="selectMood(mood.id)"
         >
           <img src="{{ mood.image }}" alt="Ícono de {{ mood.name }}" class="w-7 h-7 object-cover" />
           <p class="max-sm:hidden text-primary-content text-sm font-semibold">{{ mood.name }}</p>
+        </div>
+      } @empty {
+        <div class="alert alert-error my-3 flex-1">
+          <i class="material-symbols-outlined !text-xl">error</i>
+          <span>No hay estados de ánimo disponibles.</span>
         </div>
       }
     }
