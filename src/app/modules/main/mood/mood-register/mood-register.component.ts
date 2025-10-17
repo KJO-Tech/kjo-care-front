@@ -39,8 +39,8 @@ export default class MoodRegisterComponent {
 
   constructor() {
     effect(() => {
-      this.route.paramMap.subscribe(params => {
-        this.moodId.set(params.get('id') || '');
+      this.route.queryParamMap.subscribe(params => {
+        this.moodId.set(params.get('moodId') ?? '');
       });
 
       if (this.moodId() !== '') {

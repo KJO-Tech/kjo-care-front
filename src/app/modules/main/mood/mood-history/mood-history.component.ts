@@ -16,7 +16,6 @@ import { formatDateToISO8601 } from '../../../../shared/utils/date';
 export default class MoodHistoryComponent {
   private router = inject(Router);
 
-  private moodService = inject(MoodStateService);
   private moodUserService = inject(MoodTrackingUserService);
 
   moods = rxResource({
