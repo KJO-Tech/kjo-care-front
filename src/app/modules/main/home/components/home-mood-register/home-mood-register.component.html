@@ -1,4 +1,4 @@
-<div class="p-4 rounded-xl shadow-lg card space-y-3">
+<div class="p-4 rounded-xl shadow-xl card space-y-3">
   <div class="flex items-center gap-2">
     <div class="bg-gradient-to-r from-primary to-accent text-primary-content px-2 pt-1 rounded-2xl align-baseline">
       <i class="material-symbols-outlined !text-2xl h-fit">favorite</i>
@@ -17,7 +17,7 @@
     } @else if (moods.error()) {
       <div class="alert alert-error my-3 flex-1">
         <i class="material-symbols-outlined !text-xl">error</i>
-        <span>Error al cargar los estadísticas. Por favor intenta de nuevo.</span>
+        <span>Error al cargar los estados de ánimo. Por favor intenta de nuevo.</span>
         <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
           <i class="material-symbols-outlined !text-xl">refresh</i>
         </button>
@@ -33,7 +33,7 @@
           }"
           (click)="selectMood(mood.id)"
         >
-          <img src="{{ mood.image }}" alt="Ícono de {{ mood.name }}" class="w-7 h-7 object-cover" />
+          <img src="{{ mood.image }}" alt="Ícono de {{ mood.name }}" class="w-7 h-7 object-cover overflow-hidden" />
           <p class="max-sm:hidden text-primary-content text-sm font-semibold">{{ mood.name }}</p>
         </div>
       } @empty {
