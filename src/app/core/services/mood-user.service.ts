@@ -5,14 +5,18 @@ import { ApiResponse } from '../../shared/interfaces/api-response';
 import { UserMood } from '../interfaces/mood-user.interface';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class MoodTrackingUserService {
   private http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/api/mind/mood-tracking/user-mood`;
 
   saveMyMood(moodId: string) {
-    return this.http.post<ApiResponse<UserMood>>(`${this.baseUrl}/track-mood`, {moodId});
+    return this.http.post<ApiResponse<UserMood>>(`${this.baseUrl}/track-mood`, { moodId });
+  }
+
+  getMyMoods() {
+    return this.http.get<ApiResponse<UserMood[]>>(`${this.baseUrl}/my-moods`);
   }
 
 }

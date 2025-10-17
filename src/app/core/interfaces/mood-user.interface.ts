@@ -1,3 +1,5 @@
+import { Content } from '../models/mood.model';
+
 export interface UserMood {
   id: string;
   user: {
@@ -6,6 +8,6 @@ export interface UserMood {
     firstName: string;
     lastName: string;
   }
-  mood: string;
+  mood: Content;
   recordedDate: string;
 }
