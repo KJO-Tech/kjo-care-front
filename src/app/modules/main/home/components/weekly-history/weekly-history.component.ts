@@ -60,7 +60,7 @@ export class WeeklyHistoryComponent {
       let dominantMood: Content = {
         id: '',
         name: '',
-        image: '',
+        image: 'https://d14ti7ztt9zv5f.cloudfront.net/emojis/Apple/Ghost-on-Apple-iOS-13.3/Ghost-on-Apple-iOS-13.3.png',
         color: '#CCCCCC',
         description: '',
         state: '',
