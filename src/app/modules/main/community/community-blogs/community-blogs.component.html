@@ -1,1 +1,161 @@
-<p>community-blogs works!</p>
+<div class="">
+  <h1 class="text-2xl font-bold text-primary">
+    Comunidad
+  </h1>
+  <p class="text-base text-base-content/80">Comparte y descubre experiencias que inspiran ✨</p>
+</div>
+
+<!-- FILTER -->
+<div class="flex justify-between gap-5 gap-y-2 flex-col md:flex-row my-3">
+  <label class="input w-full md:flex-2">
+    <i class="material-icons-outlined !text-xl opacity-50">search</i>
+    <input
+      type="search"
+      class="grow"
+      placeholder="Buscar posts..."
+      [value]="search()"
+      (input)="search.set(searchInput.value)"
+      #searchInput
+    />
+  </label>
+
+  <div class="flex gap-2 flex-1 *:flex-1">
+    <select
+      class="select"
+      [value]="category()"
+      (change)="category.set(categorySelect.value)"
+      #categorySelect
+    >
+      <option value="">Todas las categorías</option>
+      @for (category of categories(); track $index) {
+        <option value="{{ category.id }}">{{ category.name }}</option>
+      }
+    </select>
+
+    <select
+      class="select"
+      [value]="type()"
+      (change)="setType(typeSelect.value)"
+      #typeSelect
+    >
+      <option value="default">Todos</option>
+      <option value="recent">Recientes</option>
+      <option value="popular">Populares</option>
+      <option value="my-blogs">Mis Blogs</option>
+    </select>
+  </div>
+</div>
+
+<button class="btn bg-gradient-to-r from-primary to-accent border-none text-primary-content w-full my-3"
+        (click)="goToCreateBlog()">
+  <i class="material-symbols-outlined !text-xl">add</i>
+  Compartir tu experiencia
+</button>
+
+<!-- BLOG -->
+<div class="flex flex-col my-3 gap-4">
+  @if (blogs.isLoading()) {
+    @for (i of [1, 2, 3]; track $index) {
+      <div class="card bg-base-100 w-full shadow-lg">
+        <figure class="w-full h-52 bg-base-200 skeleton flex items-center justify-center">
+        </figure>
+        <div class="card-body">
+          <div class="flex gap-3 items-center">
+            <div class="skeleton w-12 h-12 rounded-full avatar avatar-placeholder">
+            </div>
+            <div class="flex-1 flex-col flex gap-2">
+              <div class="skeleton h-3 w-1/3"></div>
+              <div class="skeleton h-2 w-1/4"></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between my-2">
+            <div class="skeleton h-5 w-1/2"></div>
+          </div>
+          <div class="skeleton h-3 w-full"></div>
+          <div class="skeleton h-3 w-full"></div>
+          <div class="card-actions justify-end items-center">
+            <div class="btn btn-neutral">
+              <span class="loading loading-spinner"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+  } @else if (blogs.error()) {
+    <div class="alert alert-error my-3 flex-1">
+      <i class="material-symbols-outlined !text-xl">error</i>
+      <span>Error al cargar los blogs. Por favor intenta de nuevo.</span>
+      <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+        <i class="material-symbols-outlined !text-xl">refresh</i>
+      </button>
+    </div>
+  } @else {
+    @for (blog of filteredBlogs(); track blog.blog.id) {
+      <div
+        class="card bg-base-100 w-full shadow-lg hover:scale-[1.01] transition-all duration-300 hover:cursor-pointer hover:shadow-xl"
+        (click)="goToBlog(blog.blog.id)">
+        <figure class="aspect-video w-full max-h-52 bg-base-200 flex items-center justify-center">
+          @if (blog.blog.video) {
+            <video controls class="w-full h-full">
+              <source src="{{ blog.blog.video }}" type="video/mp4" />
+            </video>
+          } @else if (blog.blog.image) {
+            <img [src]="blog.blog.image" alt="{{ blog.blog.title }}" class="w-full h-full object-cover" />
+          }
+        </figure>
+        <div class="card-body">
+          <div class="flex gap-3">
+            <div class="avatar avatar-placeholder">
+              <div class="bg-gradient-to-r from-primary to-accent text-primary-content w-12 rounded-full font-semibold">
+                <span class="">{{ getUserLetters(blog.blog.author) }}</span>
+              </div>
+            </div>
+            <div class="w-full">
+              <div class="font-semibold">{{ blog.blog.author?.firstName }} {{ blog.blog.author?.lastName }}</div>
+              <div class="flex items-center gap-2">
+                @if (blog.blog.publishedDate) {
+                  <relative-time
+                    class="text-sm opacity-80"
+                    datetime="{{ blog.blog.publishedDate }}"
+                    precision="day"
+                  ></relative-time>
+                } @else {
+                  <span class="text-xs opacity-80">No date</span>
+                }
+                <!--                <div class="badge badge-soft rounded-full badge-primary">{{ blog.blog.category?.name }}</div>-->
+              </div>
+            </div>
+          </div>
+
+          <h2 class="card-title">{{ blog.blog.title }}</h2>
+          <p class="line-clamp-2">{{ blog.blog.content }}</p>
+          <div class="card-actions justify-end">
+            <div class="flex-1 flex gap-4">
+              <button
+                class="flex items-center justify-center gap-1 hover:cursor-pointer hover:scale-[1.1] transition-all duration-300 hover:text-error text-base-content/60">
+                <i class="material-symbols-outlined !text-2xl">favorite</i>
+                <span class="text-base">{{ blog.reactionCount }}</span>
+              </button>
+              <button
+                class="flex items-center justify-center gap-1 hover:cursor-pointer hover:scale-[1.1] transition-all duration-300 hover:text-info text-base-content/60"
+                (click)="goToBlogCommentSection($event, blog.blog.id)">
+                <i class="material-symbols-outlined !text-2xl">comment</i>
+                <span class="text-base">{{ blog.commentCount }}</span>
+              </button>
+              <button
+                class="flex items-center justify-center gap-1 hover:cursor-pointer hover:scale-[1.1] transition-all duration-300 hover:text-success text-base-content/60">
+                <i class="material-symbols-outlined !text-2xl">ios_share</i>
+              </button>
+            </div>
+            <button class="btn btn-outline btn-primary btn-sm" (click)="goToBlog(blog.blog.id)">Leer más</button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <p class="text-center">
+        No hay blogs disponibles. Pero, puedes ser el primero en crear uno.
+      </p>
+    }
+  }
+</div>
+
