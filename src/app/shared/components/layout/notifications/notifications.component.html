@@ -1,4 +1,4 @@
-<div class="dropdown dropdown-end">
+<div class="dropdown dropdown-end dropdown-open">
   <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
     <div class="w-10 rounded-full p-2 indicator">
       <i class="material-symbols-outlined">notifications</i>
@@ -9,24 +9,28 @@
     tabindex="0"
     class="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-4 sm:w-80 p-2 shadow-md space-y-1 w-[70vw]"
   >
-    <div class="px-2 py-1.5 text-sm font-semibold">Nofiticaciones</div>
-    <hr/>
+    <div class="px-2 py-1.5 text-sm font-semibold">Notificaciones</div>
+    <hr />
 
-    @for (notification of notifications(); track $index) {
+    @for (notification of notifications().slice(0, 3); track $index) {
       <li class="">
         <div class="flex flex-col items-start gap-1">
           <p class="font-medium text-sm">{{ notification.title }}</p>
-          <p class="text-xs opacity-80">{{ notification.description }}</p>
+          <p class="text-xs opacity-80">{{ notification.message }}</p>
           <relative-time
             class="text-xs opacity-80"
-            datetime="{{ notification.date }}"
+            datetime="{{ notification.createdAt }}"
             tense="past"
           ></relative-time>
         </div>
       </li>
+    } @empty {
+      <li>
+        <p class="justify-center">No hay notificaciones</p>
+      </li>
     }
 
-    <hr/>
-    <li><a class="justify-center">Ver todas las nofiticaciones</a></li>
+    <hr />
+    <li><a class="justify-center">Ver todas las notificaciones</a></li>
   </ul>
 </div>

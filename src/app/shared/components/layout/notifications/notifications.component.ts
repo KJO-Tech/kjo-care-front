@@ -1,4 +1,9 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, inject, OnDestroy, signal } from '@angular/core';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { map, Subscription, tap } from 'rxjs';
+import { NotificationResponse } from '../../../../core/models/notification';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { KeycloakService } from '../../../../modules/auth/services/keycloak.service';
 
 @Component({
   selector: 'navbar-notifications',
@@ -6,28 +11,45 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, signal } from '@angular/core';
   imports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class NotificationsComponent {
-  notifications = signal([
-    {
-      id: 1,
-      title: 'New message',
-      description: 'You have a new message',
-      date: '2025-04-15T16:30:00-08:00',
-      type: 'info'
-    },
-    {
-      id: 2,
-      title: 'New message',
-      description: 'You have a new message',
-      date: '2025-01-01T16:30:00-08:00',
-      type: 'info'
-    },
-    {
-      id: 3,
-      title: 'New message',
-      description: 'You have a new message',
-      date: '2025-01-01T16:30:00-08:00',
-      type: 'info'
-    }
-  ]);
+export class NotificationsComponent implements OnDestroy {
+  private notificationService = inject(NotificationService);
+  private keycloakService = inject(KeycloakService);
+
+  private notificationSubscription?: Subscription;
+
+  private notificationsResource = rxResource({
+    loader: () => this.notificationService.getMyNotifications().pipe(
+      map(response => response.result),
+      tap(list => {
+        this.notifications.set(list);
+      })
+    )
+  });
+
+  notifications = signal<NotificationResponse[]>([]);
+
+  constructor() {
+    effect((onCleanup) => {
+      const userId = this.keycloakService.profile()?.id;
+
+      if (userId) {
+        this.notificationService.connect();
+
+        this.notificationSubscription = this.notificationService.watchNotifications()
+          .subscribe((message) => {
+            console.log('¡Mensaje recibido!', message.body);
+            const newNotification = JSON.parse(message.body) as NotificationResponse;
+            this.notifications.update(list => [newNotification, ...list]);
+          });
+
+        onCleanup(() => {
+          this.notificationSubscription?.unsubscribe();
+        });
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.notificationService.disconnect();
+  }
 }
