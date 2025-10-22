@@ -1,13 +1,14 @@
 // src/app/services/notification.service.ts
-import { computed, inject, Injectable } from '@angular/core';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
 import { RxStomp, RxStompState } from '@stomp/rx-stomp';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { Message } from '@stomp/stompjs';
 import { KeycloakService } from '../../modules/auth/services/keycloak.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { ApiResponse } from '../../shared/interfaces/api-response';
 import { NotificationResponse } from '../models/notification';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,41 @@ export class NotificationService {
 
   private http = inject(HttpClient);
   private keycloakService = inject(KeycloakService);
+  private toastService = inject(ToastService);
+
   private rxStomp: RxStomp;
+  private notificationSubscription?: Subscription;
 
   private userId = computed(() => this.keycloakService.profile()?.id);
 
+  public notifications = signal<NotificationResponse[]>([]);
+
   constructor() {
     this.rxStomp = new RxStomp();
+
+    this.getMyNotifications().subscribe({
+      next: (response) => {
+        this.notifications.set(response.result ?? []);
+      },
+    })
+
+    effect((onCleanup) => {
+      if (this.keycloakService.profile()?.id) {
+        this.connect();
+
+        this.notificationSubscription = this.watchNotifications()
+          .subscribe((message) => {
+            const newNotification = JSON.parse(message.body) as NotificationResponse;
+            this.notifications.update(list => [newNotification, ...list]);
+
+            this.toastService.addNotification(newNotification);
+          });
+
+        onCleanup(() => {
+          this.notificationSubscription?.unsubscribe();
+        });
+      }
+    });
   }
 
   public connect(): void {
@@ -35,45 +65,29 @@ export class NotificationService {
       return;
     }
 
-    // Si ya está conectado o conectando, no hacer nada
     if (this.rxStomp.connected() || this.rxStomp.connectionState$.value === RxStompState.CONNECTING) {
-      console.log('WebSocket ya está conectado o conectando');
       return;
     }
 
     this.rxStomp.configure({
-      // Usa la URL completa del WebSocket
       brokerURL: this.wsUrl,
-
       connectHeaders: {
         Authorization: `Bearer ${token}`
       },
-
-      // Tiempo de reconexión
       reconnectDelay: 5000,
-
-      // Heartbeat (importante para mantener la conexión)
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
-
-      // Timeout de conexión
       connectionTimeout: 5000,
-
-      // Debug
       debug: (msg: string): void => {
         console.log('[STOMP]', new Date().toLocaleTimeString(), msg);
       },
-
-      // Callback cuando se establece la conexión
       beforeConnect: () => {
         console.log('Intentando conectar al WebSocket...');
-      },
+      }
     });
 
-    console.log('Activando cliente STOMP...');
     this.rxStomp.activate();
 
-    // Observar el estado de la conexión
     this.rxStomp.connectionState$.subscribe((state) => {
       console.log('Estado de conexión:', RxStompState[state]);
     });
@@ -83,10 +97,24 @@ export class NotificationService {
     return this.http.get<ApiResponse<NotificationResponse[]>>(`${this.baseUrl}`);
   }
 
+  public markAsRead(notificationId: string): Observable<ApiResponse<NotificationResponse>> {
+    return this.http.patch<ApiResponse<NotificationResponse>>(`${this.baseUrl}/${notificationId}/read`, {}).pipe(
+      tap(() => {
+        this.notifications.update(list =>
+          list.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
+        );
+      })
+    );
+  }
+
+  // public markAllAsRead(): Observable<ApiResponse<void>> {
+  //   return this.http.post<ApiResponse<void>>(`${this.baseUrl}/read-all`, {});
+  // }
+
   public watchNotifications(): Observable<Message> {
     const userId = this.userId();
     if (!userId) {
-      throw new Error("El usuario no está autenticado, no se puede suscribir.");
+      throw new Error('El usuario no está autenticado, no se puede suscribir.');
     }
 
     const destination = `/queue/notifications-${userId}`;

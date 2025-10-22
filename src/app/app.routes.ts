@@ -38,6 +38,7 @@ export const routes: Routes = [
       { path: 'community', loadChildren: () => import('./modules/main/community/community.routes') },
       { path: 'resources', loadComponent: () => import('./modules/main/resources/resources.component') },
       { path: 'profile', loadComponent: () => import('./modules/main/profile/profile.component') },
+      { path: 'notifications', loadComponent: () => import('./modules/main/notifications/notifications-page.component') }
     ]
   }
 ];

@@ -1,4 +1,15 @@
 <div class="toast toast-top toast-end z-[9999]">
+  @for (notification of toastService.notifications(); track notification.id) {
+    <div role="alert" class="alert alert-vertical sm:alert-horizontal">
+      <i class="material-symbols-outlined text-3xl text-primary">{{ notificationIcons[notification.type] }}</i>
+      <div class="max-w-56">
+        <h3 class="font-bold">{{ notification.title }}</h3>
+        <div class="text-xs">{{ notification.message }}</div>
+      </div>
+      <button class="btn btn-sm" (click)="handleNotificationClick(notification)">Ver</button>
+    </div>
+  }
+
   @for (toast of toastService.toasts(); track $index) {
     <div class="alert" [ngClass]="{
       'alert-success': toast.type === 'success',
@@ -6,7 +17,7 @@
       'alert-info': toast.type === 'info',
       'alert-warning': toast.type === 'warning',
     }">
-      <div class="flex-1">
+      <div class="flex-1 max-w-56">
         <p class="text-sm font-medium">
           {{ toast.message }}
         </p>
