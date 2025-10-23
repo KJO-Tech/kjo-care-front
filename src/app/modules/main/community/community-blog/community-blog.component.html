@@ -111,9 +111,10 @@
         <div class="flex-1 flex gap-4 items-center">
           <button
             class="flex items-center justify-center gap-1 hover:cursor-pointer hover:scale-[1.1] transition-all duration-300 hover:text-error text-base-content/60"
+            [class.text-error]="blog.value()?.hasLiked"
             (click)="toggleLike()">
             <i class="material-icons-outlined !text-2xl">
-              {{ blog.value()!.hasLiked ? 'favorite' : 'favorite_border' }}
+              {{ blog.value()?.hasLiked ? 'favorite' : 'favorite_border' }}
             </i>
             <span class="text-base">{{ blog.value()?.reactionCount }}</span>
           </button>
