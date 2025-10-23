@@ -1,0 +1,100 @@
+<h2 class="text-3xl font-semibold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+  {{ title() }}
+</h2>
+
+<form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+  <fieldset class="fieldset text-base font-medium">
+    <legend class="fieldset-legend">Título</legend>
+    <input
+      type="text"
+      class="input validator w-full"
+      formControlName="title"
+      placeholder="Título"
+      minlength="3"
+      required
+      autocomplete="off"
+    />
+    <p class="validator-hint hidden">
+      {{ formUtils.getFieldError(blogForm, 'title') }}
+    </p>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend text-base font-medium">Contenido</legend>
+    <textarea
+      class="textarea validator w-full"
+      formControlName="content"
+      placeholder="Contenido"
+      required
+      minlength="5"
+      autocomplete="off"
+    ></textarea>
+    <p class="validator-hint hidden">
+      {{ formUtils.getFieldError(blogForm, 'content') }}
+    </p>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend text-base font-medium">Imagen</legend>
+    <input
+      type="file"
+      class="file-input validator w-full"
+      formControlName="image"
+      accept="image/*"
+      autocomplete="off"
+      (change)="onFileChange($event, 'image')"
+    />
+    <p class="validator-hint hidden">
+      {{ formUtils.getFieldError(blogForm, 'image') }}
+    </p>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend text-base font-medium">Video</legend>
+    <input
+      type="file"
+      accept="video/*"
+      class="file-input validator w-full"
+      formControlName="video"
+      autocomplete="off"
+      (change)="onFileChange($event, 'video')"
+    />
+    <p class="validator-hint hidden">
+      {{ formUtils.getFieldError(blogForm, 'video') }}
+    </p>
+  </fieldset>
+
+  <fieldset class="fieldset">
+    <legend class="fieldset-legend text-base font-medium">Categoría</legend>
+    <select
+      class="select validator w-full"
+      formControlName="categoryId"
+      required
+      [ngClass]="{ '!input-error': formUtils.isValidField(blogForm, 'categoryId') }"
+    >
+      <option disabled [ngValue]="0">-- Seleccionar categoría --</option>
+
+      @for (category of categories(); track $index) {
+        <option [ngValue]="category.id">{{ category.name }}</option>
+      }
+    </select>
+    <p class="validator-hint hidden">
+      {{ formUtils.getFieldError(blogForm, 'categoryId') }}
+    </p>
+  </fieldset>
+
+  <div class="mt-4">
+    <button
+      class="btn btn-primary w-full"
+      [disabled]="blogForm.invalid || isLoading()"
+      type="submit"
+    >
+      @if (isLoading()) {
+        <span class="loading loading-spinner"></span>
+      }
+      {{ nameButton() }}
+    </button>
+  </div>
+</form>
+
+

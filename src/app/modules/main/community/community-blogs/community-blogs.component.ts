@@ -7,14 +7,16 @@ import { map } from 'rxjs';
 import { Category } from '../../../../core/models/blog';
 import { BlogResponse } from '../../../../core/interfaces/blog-http.interface';
 import { UserProfile } from '../../../../core/models/user-profile';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { KeycloakService } from '../../../auth/services/keycloak.service';
 import { ReactionService } from '../../../../core/services/reaction.service';
 
 @Component({
   selector: 'community-blogs',
   templateUrl: './community-blogs.component.html',
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
