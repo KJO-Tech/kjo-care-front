@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-resources-emergency',
+  selector: 'resources-emergency',
   templateUrl: './resources-emergency.component.html',
   imports: []
 })

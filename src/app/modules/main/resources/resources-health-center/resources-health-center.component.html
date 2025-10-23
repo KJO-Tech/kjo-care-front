@@ -1,1 +1,127 @@
-<p>resources-health-center works!</p>
+<div class="my-3">
+  <label for="searchInput" class="block text-sm font-medium mb-1"></label>
+  <div class="flex">
+    <input
+      id="searchInput"
+      type="text"
+      class="input input-bordered w-full"
+      placeholder="Buscar centros de salud..."
+      value="{{ searchQuery() }}"
+      (input)="searchQuery.set(searchInput.value)"
+      #searchInput
+    />
+  </div>
+</div>
+
+<div id="map" class="aspect-video w-full h-[500px] border rounded-lg overflow-hidden shadow-lg relative"></div>
+<p class="text-base text-base-content/80 my-3 italic">Centros de salud disponibles: {{ centersLength() }}</p>
+
+<div class="space-y-3">
+  @if (selectedCenter()) {
+    <div class="card bg-base-200 shadow-lg card-border h-full">
+      <div class="card-body justify-between">
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between">
+            <h2 class="card-title line-clamp-2 text-base w-full">{{ selectedCenter()!.name }}</h2>
+            @if (userLocation()) {
+              <p class="font-bold text-accent text-nowrap">
+                <i class="material-symbols-outlined align-bottom">distance</i>
+                {{ calculateDistance(selectedCenter()!.latitude, selectedCenter()!.longitude) }} km
+              </p>
+            }
+          </div>
+          <div class="flex items-center gap-2 text-xs opacity-80">
+            <i class="material-symbols-outlined !text-xl">location_on</i>
+            <span class="line-clamp-2">{{ selectedCenter()!.address }}</span>
+          </div>
+          <div class="flex items-center gap-2 text-xs opacity-80">
+            <i class="material-symbols-outlined !text-xl">phone</i>
+            <p class="text-sm">
+              {{ selectedCenter()!.phone }}</p>
+          </div>
+        </div>
+        <div class="card-actions w-full">
+          <button class="btn btn-neutral btn-outline w-full" (click)="clearCenterSelected()">Quitar selección</button>
+        </div>
+      </div>
+    </div>
+    <hr class="mx-3 text-primary" />
+  }
+
+  @if (nearCenters.isLoading() && dataType() === 'near') {
+    <div class="skeleton h-32 w-full"></div>
+    <div class="skeleton h-32 w-full"></div>
+    <div class="skeleton h-32 w-full"></div>
+  } @else if (centers.isLoading()) {
+    <div class="skeleton h-32 w-full"></div>
+    <div class="skeleton h-32 w-full"></div>
+    <div class="skeleton h-32 w-full"></div>
+  } @else if (healthCenters().length === 0 && dataType() === 'near') {
+    <div class="text-center my-6">
+      <i
+        class="material-symbols-outlined !text-7xl overflow-hidden max-w-36 rounded-full bg-gradient-to-l from-primary to-accent w-fit mx-auto text-transparent bg-clip-text">location_off</i>
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent my-1">
+        No se encontraron centros de salud cercanos
+      </h1>
+      <p class="text-lg text-base-content/80 mb-6">
+        Prueba usando todos los centros de salud disponibles.
+      </p>
+      <button class="btn btn-primary" (click)="setAllCenters()">
+        Todos los Centros de Salud
+      </button>
+    </div>
+  } @else if (healthCenters().length === 0 && dataType() === 'all') {
+    <div class="text-center my-6">
+      <i
+        class="material-symbols-outlined !text-7xl overflow-hidden max-w-36 rounded-full bg-gradient-to-l from-primary to-accent w-fit mx-auto text-transparent bg-clip-text">location_off</i>
+      <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent my-1">
+        No se encontraron centros de salud disponibles
+      </h1>
+      <p class="text-lg text-base-content/80 mb-6">
+        Lamentamos que no se hayan encontrado centros de salud. Inténtalo de nuevo más tarde.
+      </p>
+    </div>
+  } @else {
+    @for (center of filteredCenters(); track center.id) {
+      <div class="card bg-base-100 shadow-lg card-border h-full">
+        <div class="card-body justify-between">
+          <div class="flex flex-col">
+            <div class="flex items-center justify-between">
+              <h2 class="card-title line-clamp-2 text-base w-full">{{ center.name }}</h2>
+              @if (this.userLocation()) {
+                <p class="font-bold text-accent text-nowrap">
+                  <i class="material-symbols-outlined align-bottom">distance</i>
+                  {{ calculateDistance(center.latitude, center.longitude) }} km
+                </p>
+              }
+            </div>
+            <div class="flex items-center gap-2 text-xs opacity-80">
+              <i class="material-symbols-outlined !text-xl">location_on</i>
+              <span class="line-clamp-2">{{ center.address }}</span>
+            </div>
+            <div class="flex items-center gap-2 text-xs opacity-80">
+              <i class="material-symbols-outlined !text-xl">phone</i>
+              <p class="text-sm">
+                {{ center.phone }}</p>
+            </div>
+          </div>
+          <div class="card-actions w-full">
+            <button class="btn btn-primary btn-outline w-full" (click)="seeOnMap(center)">Ver en el mapa</button>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="text-center my-6">
+        <i
+          class="material-symbols-outlined !text-7xl overflow-hidden max-w-36 rounded-full bg-gradient-to-l from-primary to-accent w-fit mx-auto text-transparent bg-clip-text">wrong_location</i>
+        <h1 class="text-3xl font-bold bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent my-1">
+          No se encontraron centros de salud
+        </h1>
+        <p class="text-lg text-base-content/80 mb-6">
+          Prueba buscando con otro tipo de nombre o dirección.
+        </p>
+      </div>
+    }
+  }
+
+</div>
