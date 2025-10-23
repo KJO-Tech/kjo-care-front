@@ -1,0 +1,33 @@
+<div class="w-full">
+  <form [formGroup]="commentForm" class="flex gap-2 w-full items-center">
+    <div class="avatar avatar-placeholder">
+      <div class="bg-gradient-to-r from-primary to-accent text-primary-content w-12 rounded-full font-semibold">
+        <span class="">{{ getUserLetters() }}</span>
+      </div>
+    </div>
+
+    <fieldset class="fieldset flex-1 w-full">
+      <input
+        type="text"
+        class="input validator w-full"
+        formControlName="content"
+        placeholder="Escribe un comentario..."
+        minlength="2"
+        required
+        autocomplete="off"
+      />
+    </fieldset>
+
+
+    <button
+      class="btn btn-circle btn-primary"
+      [disabled]="commentForm.invalid"
+      type="submit"
+      (click)="onSubmit()"
+    >
+      <i class="material-symbols-outlined !text-xl">send</i>
+    </button>
+  </form>
+
+</div>
+

@@ -103,7 +103,7 @@ export default class CommunityBlogsComponent {
   }
 
   goToCreateBlog() {
-    this.router.navigate(['/app/community/create']);
+    this.router.navigate(['/app/community/post']);
   }
 
   // TODO: Create the functions to create reactions

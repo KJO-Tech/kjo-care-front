@@ -74,7 +74,7 @@
           <div class="skeleton h-3 w-full"></div>
           <div class="skeleton h-3 w-full"></div>
           <div class="card-actions justify-end items-center">
-            <div class="btn btn-neutral">
+            <div class="btn btn-outline btn-primary btn-sm">
               <span class="loading loading-spinner"></span>
             </div>
           </div>
@@ -92,17 +92,20 @@
   } @else {
     @for (blog of filteredBlogs(); track blog.blog.id) {
       <div
-        class="card bg-base-100 w-full shadow-lg hover:scale-[1.01] transition-all duration-300 hover:cursor-pointer hover:shadow-xl"
+        class="card card-border bg-base-100 w-full shadow-lg hover:scale-[1.01] transition-all duration-300 hover:cursor-pointer hover:shadow-xl"
         (click)="goToBlog(blog.blog.id)">
-        <figure class="aspect-video w-full max-h-52 bg-base-200 flex items-center justify-center">
-          @if (blog.blog.video) {
-            <video controls class="w-full h-full">
+        @if (blog.blog.video) {
+          <figure class="aspect-video w-full max-h-72 sm:max-h-52 bg-base-200 flex items-center justify-center">
+            <video class="w-full h-full">
               <source src="{{ blog.blog.video }}" type="video/mp4" />
             </video>
-          } @else if (blog.blog.image) {
-            <img [src]="blog.blog.image" alt="{{ blog.blog.title }}" class="w-full h-full object-cover" />
-          }
-        </figure>
+          </figure>
+        } @else if (blog.blog.image) {
+          <figure class="aspect-video w-full max-h-72 sm:max-h-52 bg-base-200 flex items-center justify-center">
+            <img [src]="blog.blog.image" alt="{{ blog.blog.title }}"
+                 class="w-full max-h-72 sm:max-h-52 h-full object-cover object-center sm:object-contain" />
+          </figure>
+        }
         <div class="card-body">
           <div class="flex gap-3">
             <div class="avatar avatar-placeholder">
@@ -133,7 +136,7 @@
             <div class="flex-1 flex gap-4">
               <button
                 class="flex items-center justify-center gap-1 hover:cursor-pointer hover:scale-[1.1] transition-all duration-300 hover:text-error text-base-content/60">
-                <i class="material-symbols-outlined !text-2xl">favorite</i>
+                <i class="material-icons-outlined !text-2xl">{{ blog.hasLiked ? 'favorite' : 'favorite_border' }}</i>
                 <span class="text-base">{{ blog.reactionCount }}</span>
               </button>
               <button

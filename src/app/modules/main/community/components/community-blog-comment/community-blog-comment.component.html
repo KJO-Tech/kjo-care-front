@@ -1,0 +1,67 @@
+<li class="list-row gap-y-2 px-0">
+  <div class="avatar avatar-placeholder">
+    <div class="bg-gradient-to-l from-primary to-secondary text-neutral-content w-10 h-10 rounded-full">
+      <span class="text-xs">{{ userLetters() }}</span>
+    </div>
+  </div>
+  <div class="list-col-wrap flex items-center justify-between text-center w-full">
+    <span class="w-0 border border-secondary h-full mx-auto"></span>
+  </div>
+
+  <div class="flex items-center gap-2 w-full">
+    <div class="w-full">
+      <div class="font-semibold">{{ comment().userId.firstName }} {{ comment().userId.lastName }}</div>
+      @if (comment().date) {
+        <relative-time
+          class="text-xs opacity-80"
+          datetime="{{ comment().date }}"
+          precision="day"
+        ></relative-time>
+      } @else {
+        <span class="text-xs opacity-80">No date</span>
+      }
+    </div>
+    <div class="flex items-center text-base-content">
+      <modal-open-button
+        [modalName]="'modal_blog_comment'"
+        [classes]="'btn-square btn-link no-underline hover:no-underline hover:scale-[1.1] transition-all duration-300 text-base-content'"
+        (click)="commentService.selectedComment = selectComment('reply')"
+      >
+        <i class="material-symbols-outlined !text-xl">reply</i>
+      </modal-open-button>
+
+      @if (comment().userId.id === userId()) {
+        <modal-open-button
+          [modalName]="'modal_blog_comment'"
+          [classes]="'btn-link btn-square no-underline hover:no-underline hover:scale-[1.1] transition-all duration-300 text-info'"
+          (click)="commentService.selectedComment = selectComment('edit')"
+        >
+          <i class="material-symbols-outlined !text-xl">edit</i>
+        </modal-open-button>
+
+        <modal-open-button
+          [modalName]="'modal_blog_comment_delete'"
+          [classes]="'btn-link btn-square no-underline hover:no-underline hover:scale-[1.1] transition-all duration-300 text-error'"
+          (click)="commentService.selectedComment = selectComment('delete')"
+        >
+          <i class="material-symbols-outlined !text-xl">delete</i>
+        </modal-open-button>
+      }
+    </div>
+  </div>
+
+  <div class="list-col-wrap">
+    <p>{{ comment().content }}</p>
+    @if (comment().childrenComments.length > 0) {
+      <div class="list">
+        @for (child of comment().childrenComments; track child; ) {
+          <community-blog-comment
+            [comment]="child"
+            [commentParentId]="comment().id"
+            [userId]="userId()"
+          ></community-blog-comment>
+        }
+      </div>
+    }
+  </div>
+</li>

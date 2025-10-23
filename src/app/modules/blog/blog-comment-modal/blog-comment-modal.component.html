@@ -9,14 +9,14 @@
 
     <h2 class="text-lg font-semibold">{{ title() }}</h2>
 
-    <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="commentForm">
       <fieldset class="fieldset">
-        <legend class="fieldset-legend">Content</legend>
+        <legend class="fieldset-legend">Mensaje</legend>
         <input
           type="text"
           class="input validator w-full"
           formControlName="content"
-          placeholder="Content"
+          placeholder="Mensaje"
           minlength="2"
           required
           autocomplete="off"
@@ -28,7 +28,7 @@
 
       <div class="modal-action mt-4">
         <form method="dialog" class="space-x-2">
-          <button class="btn">Close</button>
+          <button class="btn">Cerrar</button>
 
           <button
             class="btn btn-primary"

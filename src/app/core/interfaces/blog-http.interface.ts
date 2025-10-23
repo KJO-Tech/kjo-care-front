@@ -11,6 +11,7 @@ export interface BlogResponse {
   blog: Blog;
   reactionCount: number;
   commentCount: number;
+  hasLiked: boolean;
 }
 
 export interface BlogDetailResponse {
@@ -19,6 +20,7 @@ export interface BlogDetailResponse {
   commentCount: number;
   comments: CommentSummary[];
   accesible: boolean;
+  hasLiked: boolean;
 }
 
 export interface CommentSummary {
