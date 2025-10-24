@@ -1,1 +1,83 @@
-<p>resources-emergency works!</p>
+<div class="space-y-5">
+  <div class="card bg-error/10 border-error/20 card-border shadow-xl rounded-xl">
+    <div class="card-body text-error">
+      <h2 class="card-title text-base">
+        <i class="material-symbols-outlined !text-xl">warning</i>
+        ¿Necesitas ayuda inmediata?
+      </h2>
+      <p>Si estás en crisis o peligro inmediato, contacta los servicios de emergencia.</p>
+    </div>
+  </div>
+
+  @if (resources.isLoading()) {
+    <div class="w-full skeleton h-40 bg-base-200 rounded-xl"></div>
+    <div class="w-full skeleton h-40 bg-base-200 rounded-xl"></div>
+    <div class="w-full skeleton h-40 bg-base-200 rounded-xl"></div>
+  } @else if (resources.error()) {
+    <div class="alert alert-error my-3 flex-1">
+      <i class="material-symbols-outlined !text-xl">error</i>
+      <span>Error al cargar los recursos de emergencia. Por favor intenta de nuevo.</span>
+      <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+        <i class="material-symbols-outlined !text-xl">refresh</i>
+      </button>
+    </div>
+  }
+  @else {
+    @for (resource of resources.value() ?? []; track resource.id) {
+      <div class="card bg-base-100 shadow-xl rounded-xl">
+        <figure class="bg-base-200">
+          @if (resource.resourceUrl) {
+            <img
+              [src]="resource.resourceUrl"
+              [alt]="resource.name" class="max-h-32 object-contain" />
+          }
+        </figure>
+        <div class="card-body h-fit">
+          <h2 class="card-title">{{ resource.name }}</h2>
+          <p class="">{{ resource.description }}</p>
+
+          <div class="flex items-start gap-2 max-sm:flex-col">
+            <p class="text-sm font-medium mt-2 flex-1">Contactos:</p>
+            <ul class="list gap-2 flex-4 w-full">
+              @for (contact of resource.contacts; track $index) {
+                <li class="list-row border rounded-box p-1 px-3 items-center border-base-300 shadow-sm">
+                  <i class="material-symbols-outlined !text-xl text-warning">phone</i>
+                  <p class="">{{ contact }}</p>
+
+                  <a class="btn btn-square btn-info btn-ghost btn-xs border-none" href="tel:{{ contact }}">
+                    <i class="material-symbols-outlined !text-lg">arrow_outward</i>
+                  </a>
+                  <button class="btn btn-square btn-success btn-ghost btn-xs border-none"
+                          (click)="copyToClipboard(contact)">
+                    <i class="material-symbols-outlined !text-lg">content_copy</i>
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <div class="flex items-start gap-2 max-sm:flex-col">
+            <p class="text-sm font-medium mt-2 flex-1">Enlaces:</p>
+            <ul class="list gap-2 flex-4 w-full">
+              @for (link of resource.links; track $index) {
+                <li class="list-row border rounded-box p-1 px-3 items-center border-base-300 shadow-sm">
+                  <i class="material-symbols-outlined !text-xl text-info">link</i>
+                  <p class="mt-1 truncate">{{ link }}</p>
+
+                  <a class="btn btn-square btn-info btn-ghost btn-xs border-none" href="{{ link }}" target="_blank">
+                    <i class="material-symbols-outlined !text-lg">arrow_outward</i>
+                  </a>
+                  <button class="btn btn-square btn-success btn-ghost btn-xs border-none"
+                          (click)="copyToClipboard(link)">
+                    <i class="material-symbols-outlined !text-lg">content_copy</i>
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    }
+  }
+</div>

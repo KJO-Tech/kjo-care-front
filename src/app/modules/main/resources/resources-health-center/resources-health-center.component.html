@@ -96,13 +96,14 @@
               }
             </div>
             <div class="flex items-center gap-2 text-xs opacity-80">
-              <i class="material-symbols-outlined !text-xl">location_on</i>
+              <i class="material-symbols-outlined !text-xl text-success">location_on</i>
               <span class="line-clamp-2">{{ center.address }}</span>
             </div>
             <div class="flex items-center gap-2 text-xs opacity-80">
-              <i class="material-symbols-outlined !text-xl">phone</i>
-              <p class="text-sm">
-                {{ center.phone }}</p>
+              <i class="material-symbols-outlined !text-xl text-info">phone</i>
+              <a class="text-sm link" href="tel:{{ center.phone }}">
+                {{ center.phone }}
+              </a>
             </div>
           </div>
           <div class="card-actions w-full">
