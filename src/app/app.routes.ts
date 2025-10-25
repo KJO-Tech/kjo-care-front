@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -27,7 +28,7 @@ export const routes: Routes = [
       // { path: 'health-centers', loadComponent: () => import('./modules/health-center/health-center.component') },
       { path: 'map', loadComponent: () => import('./modules/health-center-map/health-center-map.component') }
     ],
-    canActivate: [authGuard]
+    canActivate: [adminGuard]
   },
   {
     path: 'app',
@@ -39,6 +40,7 @@ export const routes: Routes = [
       { path: 'resources', loadChildren: () => import('./modules/main/resources/resources.routes') },
       { path: 'profile', loadComponent: () => import('./modules/main/profile/profile.component') },
       { path: 'notifications', loadComponent: () => import('./modules/main/notifications/notifications-page.component') }
-    ]
+    ],
+    canActivate: [authGuard]
   }
 ];
