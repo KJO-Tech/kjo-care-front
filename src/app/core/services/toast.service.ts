@@ -14,7 +14,7 @@ export class ToastService {
 
     setTimeout(() => {
       this.toasts.update(list => {
-        list.shift();
+        list.pop();
         return list;
       });
     }, toast.duration);
@@ -25,7 +25,7 @@ export class ToastService {
 
     setTimeout(() => {
       this.notifications.update(list => {
-        list.shift();
+        list.pop();
         return list;
       });
     }, 5000);
