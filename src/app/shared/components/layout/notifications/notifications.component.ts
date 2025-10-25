@@ -20,28 +20,10 @@ export class NotificationsComponent implements OnDestroy {
   notifications = computed(()=> this.notificationService.notifications());
   notificationIcons = NOTIFICATION_TYPE_ICON;
 
-  unreadCount = computed(() => this.notifications().filter(n => !n.isRead).length);
-
-  // constructor() {
-  //   effect((onCleanup) => {
-  //     if (this.keycloakService.profile()?.id) {
-  //       this.notificationService.connect();
-  //
-  //       this.notificationSubscription = this.notificationService.watchNotifications()
-  //         .subscribe((message) => {
-  //           const newNotification = JSON.parse(message.body) as NotificationResponse;
-  //           this.notifications.update(list => [newNotification, ...list]);
-  //         });
-  //
-  //       onCleanup(() => {
-  //         this.notificationSubscription?.unsubscribe();
-  //       });
-  //     }
-  //   });
-  // }
+  unreadCount = computed(() => this.notifications().filter(n => !n.read).length);
 
   handleNotificationClick(notification: NotificationResponse) {
-    if (!notification.isRead) {
+    if (!notification.read) {
       this.notificationService.markAsRead(notification.id).subscribe();
     }
     this.router.navigate([notification.link]);

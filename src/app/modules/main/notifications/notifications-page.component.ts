@@ -38,10 +38,10 @@ export default class NotificationsPageComponent {
     return notifications.filter(n => n.type === filter);
   });
 
-  unreadCount = computed(() => this.allNotifications().filter(n => !n.isRead).length);
+  unreadCount = computed(() => this.allNotifications().filter(n => !n.read).length);
 
   handleNotificationClick(notification: NotificationResponse) {
-    if (!notification.isRead) {
+    if (!notification.read) {
       this.notificationService.markAsRead(notification.id).subscribe();
     }
     this.router.navigate([notification.link]);

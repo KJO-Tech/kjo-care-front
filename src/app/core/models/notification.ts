@@ -11,7 +11,7 @@ export interface NotificationResponse {
   title: string;
   message: string;
   link: string;
-  isRead: boolean;
+  read: boolean;
   createdAt: string;
 }
 

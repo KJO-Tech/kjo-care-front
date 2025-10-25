@@ -98,10 +98,10 @@ export class NotificationService {
   }
 
   public markAsRead(notificationId: string): Observable<ApiResponse<NotificationResponse>> {
-    return this.http.patch<ApiResponse<NotificationResponse>>(`${this.baseUrl}/${notificationId}`, {}).pipe(
+    return this.http.put<ApiResponse<NotificationResponse>>(`${this.baseUrl}/${notificationId}`, {}).pipe(
       tap(() => {
         this.notifications.update(list =>
-          list.map(n => n.id === notificationId ? { ...n, isRead: true } : n)
+          list.map(n => n.id === notificationId ? { ...n, read: true } : n)
         );
       })
     );
