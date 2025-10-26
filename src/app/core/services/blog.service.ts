@@ -7,13 +7,14 @@ import { environment } from '../../../environments/environment';
 
 import { Blog } from '../models/blog';
 import { blogs } from '../../shared/utils/local-data';
-import { BlogResponse } from '../interfaces/blog-http.interface';
+import { BlogDetailResponse, BlogResponse, BlogsPublishedResponse } from '../interfaces/blog-http.interface';
+import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
-  private baseUrl: string = environment.apiUrl + '/blog/blogs';
+  private baseUrl: string = environment.apiUrl + '/api/mind/blog/blogs';
 
   private http = inject(HttpClient);
 
@@ -27,33 +28,36 @@ export class BlogService {
     this._selectedBlog.set(blog);
   }
 
-  findAll(): Observable<BlogResponse[]> {
-    return this.http.get<BlogResponse[]>(`${this.baseUrl}/all`);
+  findAll(): Observable<ApiResponse<BlogResponse[]>> {
+    return this.http.get<ApiResponse<BlogResponse[]>>(`${this.baseUrl}/all`);
   }
 
-  // findAll(): Observable<Blog[]> {
-  //   return this.http.get<{
-  //     content: Blog[];
-  //     page: number;
-  //     size: number;
-  //   }>(`${this.baseUrl}/all`).pipe(
-  //     map(({ content }) => content)
-  //   );
-  // }
-
-  getById(id: number): Observable<Blog> {
-    return this.http.get<Blog>(`${this.baseUrl}/${id}`);
+  findAllPublished(): Observable<ApiResponse<BlogResponse[]>> {
+    return this.http.get<ApiResponse<BlogResponse[]>>(`${this.baseUrl}/published`);
   }
 
-  create(request: FormData): Observable<Blog> {
-    return this.http.post<Blog>(`${this.baseUrl}`, request);
+  getPublished(page: number = 0, size: number = 10): Observable<ApiResponse<BlogsPublishedResponse>> {
+    return this.http.get<ApiResponse<BlogsPublishedResponse>>(`${this.baseUrl}?page=${page}&size=${size}`);
   }
 
-  update(request: FormData, id: number): Observable<Blog> {
-    return this.http.put<Blog>(`${this.baseUrl}/${id}`, request);
+
+  getById(id: string): Observable<ApiResponse<BlogDetailResponse>> {
+    return this.http.get<ApiResponse<BlogDetailResponse>>(`${this.baseUrl}/${id}`);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  create(request: FormData): Observable<ApiResponse<Blog>> {
+    return this.http.post<ApiResponse<Blog>>(`${this.baseUrl}`, request);
+  }
+
+  update(request: FormData, id: string): Observable<ApiResponse<Blog>> {
+    return this.http.put<ApiResponse<Blog>>(`${this.baseUrl}/${id}`, request);
+  }
+
+  reject(id: string): Observable<ApiResponse<void>> {
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/${id}/reject`, null);
+  }
+
+  delete(id: string): Observable<ApiResponse<void>> {
+    return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
   }
 }

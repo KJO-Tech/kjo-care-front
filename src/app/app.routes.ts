@@ -1,17 +1,12 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './modules/main/home/home.component';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'app',
     pathMatch: 'full'
-  },
-  {
-    path: 'home',
-    component: HomeComponent,
-    canActivate: [authGuard]
   },
   {
     path: 'dashboard',
@@ -21,12 +16,36 @@ export const routes: Routes = [
       { path: '', loadComponent: () => import('./modules/dashboard/dashboard-page.component') },
       {
         path: 'users',
-        loadComponent: () => import('./modules/user/user-page.component')
+        loadComponent: () => import('./modules/admin/user/user-page.component')
+      },
+      {
+        path: 'emergency-resources',
+        loadComponent: () => import('./modules/emergency-resource/emergency-resource.component')
       },
       { path: 'blog-management', loadComponent: () => import('./modules/blog/blog-page.component') },
-      { path: 'settings', loadChildren: () => import('./modules/settings/settings.routes') }
+      { path: 'moods', loadChildren: () => import('./modules/mood-analytics/mood-analytics.routes') },
+      { path: 'settings', loadChildren: () => import('./modules/settings/settings.routes') },
+      // { path: 'health-centers', loadComponent: () => import('./modules/health-center/health-center.component') },
+      { path: 'map', loadComponent: () => import('./modules/health-center-map/health-center-map.component') },
+      { path: 'activity-categories', loadComponent: () => import('./modules/admin/activity-category/activity-category.component') },
+      { path: 'daily-exercises', loadComponent: () => import('./modules/admin/daily-exercise/daily-exercise.component') },
+      { path: '**', redirectTo: '' }
+    ],
+    canActivate: [adminGuard]
+  },
+  {
+    path: 'app',
+    loadComponent: () => import('./modules/main/main.component'),
+    children: [
+      { path: '', loadComponent: () => import('./modules/main/home/home.component') },
+      { path: 'exercises/:id', loadComponent: () => import('./modules/main/exercises/exercises.component') },
+      { path: 'mood', loadChildren: () => import('./modules/main/mood/mood.routes') },
+      { path: 'community', loadChildren: () => import('./modules/main/community/community.routes') },
+      { path: 'resources', loadChildren: () => import('./modules/main/resources/resources.routes') },
+      { path: 'profile', loadComponent: () => import('./modules/main/profile/profile.component') },
+      { path: 'notifications', loadComponent: () => import('./modules/main/notifications/notifications-page.component') },
+      { path: '**', redirectTo: '' }
     ],
     canActivate: [authGuard]
   }
-
 ];

@@ -20,11 +20,12 @@ import { Content } from '../../../../core/models/mood.model';
 export class MoodModalComponent implements OnInit {
   modalId = input<string>("mood_editor_modal");
   mood = input<Content>({
-    id: 0,
+    id: "",
     name: "",
     color: "#6d28d9",
     isActive: true,
     description: "",
+    value: 1,
     state: "active",
     image: ""
   });
@@ -54,6 +55,8 @@ export class MoodModalComponent implements OnInit {
       name: [currentMood.name, [Validators.required, Validators.minLength(2)]],
       color: [currentMood.color, Validators.required],
       description: [currentMood.description || ''],
+      image: [currentMood.image || ''],
+      value: [currentMood.value || 1],
     });
   }
 
@@ -94,5 +97,9 @@ export class MoodModalComponent implements OnInit {
 
   get nameControl() { return this.moodForm.get('name'); }
   get colorControl() { return this.moodForm.get('color'); }
+  get descriptionControl() { return this.moodForm.get('description'); }
+  get imageControl() { return this.moodForm.get('image'); }
+  get valueControl() { return this.moodForm.get('value'); }
+
   get isActiveControl() { return this.moodForm.get('isActive'); }
 }

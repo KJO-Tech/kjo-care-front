@@ -1,0 +1,51 @@
+<div class="flex">
+  <div class="dock sm:h-full lg:w-45 sm:w-18 sm:top-0 sm:flex-col sm:justify-center bg-base-200 lg:px-4">
+    @for (link of links; track $index) {
+      <a
+        routerLink="{{ link.path }}"
+        routerLinkActive="bg-primary text-primary-content font-semibold"
+        [routerLinkActiveOptions]="{ exact: link.path === '/app' }"
+        class="sm:p-2.5 sm:basis-1 lg:flex-row lg:justify-start lg:gap-3 lg:w-full max-w-none"
+      >
+        <i routerLinkActive #rla="routerLinkActive"
+           [routerLinkActiveOptions]="{ exact: link.path === '/app' }"
+           [ngClass]="{'material-icons': rla.isActive, 'material-icons-outlined': !rla.isActive}">
+          {{ link.icon }}
+        </i>
+        <span
+          class="dock-label sm:hidden lg:block lg:!text-sm"
+        >{{ link.name }}</span>
+      </a>
+    }
+  </div>
+
+  <div class="flex-1">
+    <!--    Navbar  -->
+    <div class="navbar bg-base-200 w-full sticky top-0 z-30">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-lg px-1 sm:ml-2 lg:ml-2.5" routerLink="/app">
+          <i class="material-symbols-outlined !text-3xl">network_intelligence</i>
+          <span class="sm:hidden">KJO Mind Care</span>
+        </a>
+      </div>
+
+      <div class="navbar-end w-fit mr-2 sm:mr-3 flex items-center gap-3">
+        @if (isAdmin()) {
+          <a class="btn btn-ghost btn-circle text-lg px-1 sm:ml-2 lg:ml-2.5" routerLink="/dashboard">
+            <i class="material-symbols-outlined !text-2xl">dashboard</i>
+          </a>
+        }
+
+        <app-theme-controller />
+
+        <navbar-notifications class="" />
+      </div>
+    </div>
+
+    <div class="sm:pl-18 lg:pl-48 max-sm:pb-16">
+      <main class="p-4 max-w-screen-lg mx-auto max-sm:w-screen">
+        <router-outlet />
+      </main>
+    </div>
+  </div>
+</div>

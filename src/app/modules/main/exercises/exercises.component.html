@@ -1,0 +1,141 @@
+<!--Contenedor principal-->
+<div class="p-4 sm:p-6 md:p-8">
+  <div class="max-w-4xl mx-auto">
+
+    <!--1. Estado de Carga-->
+    @if (activities.isLoading()) {
+      <div class="space-y-6">
+        <!--Skeleton del encabezado-->
+        <div class="skeleton h-8 w-16 rounded-lg"></div>
+        <div class="skeleton h-10 w-3/4 rounded-lg"></div>
+        <div class="flex gap-2">
+          <div class="skeleton h-6 w-24 rounded-full"></div>
+          <div class="skeleton h-6 w-24 rounded-full"></div>
+          <div class="skeleton h-6 w-24 rounded-full"></div>
+        </div>
+        <div class="divider"></div>
+        <!--Skeleton del contenido-->
+        <div class="skeleton h-64 w-full rounded-box"></div>
+        <div class="space-y-2">
+          <div class="skeleton h-4 w-full"></div>
+          <div class="skeleton h-4 w-full"></div>
+          <div class="skeleton h-4 w-3/4"></div>
+        </div>
+        <!--Skeleton del botón-->
+        <div class="skeleton h-12 w-full mt-4 rounded-lg"></div>
+      </div>
+    } @else if (activities.error()) {
+      <div class="alert alert-error">
+        <i class="material-symbols-outlined">error</i>
+        <span>Error al cargar el ejercicio. Por favor, intenta de nuevo.</span>
+        <button class="btn btn-sm btn-ghost" (click)="reload()">Reintentar</button>
+      </div>
+    } @else if (!selectedExercise()) {
+      <div role="alert" class="alert alert-warning">
+        <i class="material-symbols-outlined">search_off</i>
+        <div>
+          <h3 class="font-bold">Ejercicio no encontrado</h3>
+          <div class="text-xs">El ejercicio que buscas no existe o no está disponible.</div>
+        </div>
+        <a class="btn btn-sm" routerLink="/app">Volver al inicio</a>
+      </div>
+    }
+    @else {
+      @if (selectedExercise(); as exercise) {
+        <div class="card bg-base-100 shadow-xl border border-base-300/50">
+          <div class="card-body">
+            <!--Encabezado con botón de regreso-->
+            <div class="mb-4">
+              <button class="btn btn-ghost btn-sm" (click)="goBack()">
+                <i class="material-symbols-outlined">arrow_back</i>
+                Volver
+              </button>
+            </div>
+
+            <!--Título y Metadatos-->
+            <h1 class="card-title text-3xl md:text-4xl font-extrabold tracking-tight mb-2">{{ exercise.exercise.title }}</h1>
+            <div class="flex flex-wrap gap-2 mb-4 text-sm">
+              <div class="badge badge-primary badge-outline gap-2">
+                <i class="material-symbols-outlined !text-base">bookmark</i>
+                {{ exercise.exercise.categoryName }}
+              </div>
+              <div class="badge badge-secondary badge-outline gap-2">
+                <i class="material-symbols-outlined !text-base">signal_cellular_alt</i>
+                {{ exercise.exercise.difficultyDisplay }}
+              </div>
+              <div class="badge badge-accent badge-outline gap-2">
+                <i class="material-symbols-outlined !text-base">timer</i>
+                {{ exercise.exercise.durationMinutes }} min
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!--Contenido dinámico del ejercicio-->
+            <div class="">
+              @switch (exercise.exercise.contentType) {
+                @case ('VIDEO') {
+                    <!-- Reproductor de Video -->
+                  @if (exercise.exercise.contentType === 'VIDEO') {
+                    <div class="rounded-lg overflow-hidden aspect-video bg-neutral max-w-[72dvw]">
+                      <!-- Video de YouTube -->
+                      @if (youtubeVideoId(); as videoId) {
+                        <youtube-player
+                          [videoId]="videoId"
+                          class="*:max-w-[72dvw] *:h-full "
+                          [playerVars]="{ autoplay: 0, controls: 1, modestbranding: 1 }"
+                        />
+                      } @else if (isStandardVideo()) {
+                        <!-- Video Estándar (MP4) -->
+                        <video class="w-full h-full" controls [src]="exercise.exercise.contentUrl"></video>
+                      }
+                    </div>
+                  }
+                }
+                @case ('TEXTO') {
+                  <!--Contenido de texto con imagen-->
+                  @if (exercise.exercise.thumbnailUrl) {
+                    <figure>
+                      <img [src]="exercise.exercise.thumbnailUrl" [alt]="exercise.exercise.title"
+                           class="rounded-box w-full object-cover mb-4">
+                    </figure>
+                  }
+                  <p [innerHTML]="exercise.exercise.description"></p>
+                }
+                @case ('AUDIO') {
+                  <div class="alert alert-info">
+                    <i class="material-symbols-outlined">headphones</i>
+                    <span>El contenido de audio estará disponible próximamente.</span>
+                  </div>
+                }
+                @case ('JUEGO') {
+                  <div class="alert alert-info">
+                    <i class="material-symbols-outlined">stadia_controller</i>
+                    <span>El juego interactivo estará disponible próximamente.</span>
+                  </div>
+                }
+              }
+            </div>
+
+            <!--Descripción adicional (si aplica)-->
+            @if (exercise.exercise.contentType !== 'TEXTO') {
+              <div class="divider"></div>
+              <div class="prose max-w-none">
+                <h3 class="font-bold">Descripción</h3>
+                <p>{{ exercise.exercise.description }}</p>
+              </div>
+            }
+
+            <!--Acción-->
+            <div class="card-actions justify-center mt-8">
+              <button class="btn btn-primary btn-wide" (click)="markAsComplete()">
+                <i class="material-symbols-outlined">check_circle</i>
+                Marcar como Completado
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    }
+  </div>
+</div>

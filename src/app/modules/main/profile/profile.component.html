@@ -1,0 +1,89 @@
+<div class="p-4">
+  <!-- Encabezado -->
+  <div class="mb-8">
+    <h1 class="text-3xl font-semibold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">Mi
+      Perfil</h1>
+    <p class="text-base-content/70 mt-1">Gestiona la información de tu cuenta y tu configuración de seguridad.</p>
+  </div>
+
+  <!-- Tarjeta de Perfil -->
+  @if (userProfile(); as profile) {
+    <div class="card bg-base-100 shadow-xl border border-base-300">
+      <div class="card-body">
+        <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+          <!-- Avatar -->
+          <div class="avatar avatar-placeholder">
+            <div
+              class="bg-primary text-primary-content rounded-full w-24 h-24 ring ring-primary ring-offset-base-100 ring-offset-2">
+              <span class="text-4xl font-bold">{{ profile.firstName ? profile.firstName!.charAt(0) : 'U' }}</span>
+            </div>
+          </div>
+
+          <!-- Información del Usuario -->
+          <div class="text-center sm:text-left">
+            <h2 class="text-2xl font-bold">{{ profile.firstName }} {{ profile.lastName }}</h2>
+            <p class="text-base-content/60 mt-1">{{ profile.email }}</p>
+            @if (profile.username && profile.username !== profile.email) {
+              <p class="text-sm text-base-content/50">Usuario: {{ profile.username }}</p>
+            }
+          </div>
+        </div>
+
+        <div class="divider my-4"></div>
+
+        <!-- Acciones -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Editar Perfil -->
+          <div class="card bg-base-200/50 border border-base-300/50">
+            <div class="card-body">
+              <h3 class="card-title text-lg">Información Personal</h3>
+              <p class="text-sm text-base-content/70 mb-4">
+                Actualiza tu nombre, correo electrónico y otros datos personales.
+              </p>
+              <div class="card-actions justify-end">
+                <button class="btn btn-primary" (click)="editProfile()">
+                  <i class="material-symbols-outlined">edit</i>
+                  Editar Perfil
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Cerrar Sesión -->
+          <div class="card bg-error/10 border border-error/30">
+            <div class="card-body flex-row items-center justify-between">
+              <div>
+                <h3 class="card-title text-lg text-error">Cerrar Sesión</h3>
+                <p class="text-sm text-error/80">Finaliza tu sesión actual en este dispositivo.</p>
+              </div>
+              <div class="card-actions">
+                <button class="btn btn-error" (click)="logout()">
+                  <i class="material-symbols-outlined">logout</i>
+                  Cerrar Sesión
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  } @else {
+    <!-- Skeleton Loader -->
+    <div class="card bg-base-100 shadow-xl">
+      <div class="card-body">
+        <div class="flex items-center space-x-6">
+          <div class="skeleton w-24 h-24 rounded-full shrink-0 bg-base-200"></div>
+          <div class="flex flex-col gap-4 w-full">
+            <div class="skeleton h-8 w-1/2 bg-base-200"></div>
+            <div class="skeleton h-4 w-3/4 bg-base-200"></div>
+          </div>
+        </div>
+        <div class="divider my-6"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="skeleton h-32 w-full bg-base-200"></div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

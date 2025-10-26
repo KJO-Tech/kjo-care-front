@@ -15,7 +15,7 @@ export class BlogFilterComponent {
   onFilterChange = output<FilterDTO>();
 
   search = signal<string>('');
-  category = signal<number>(0);
+  category = signal<string>('');
   status = signal<string>('');
 
   filterBlogs() {

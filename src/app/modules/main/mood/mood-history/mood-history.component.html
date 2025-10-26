@@ -1,0 +1,58 @@
+<div class="p-4 rounded-xl shadow-xl card space-y-3 backdrop-blur-sm">
+  <div class="flex items-center gap-2">
+    <div class="bg-gradient-to-r from-secondary to-primary text-primary-content px-2 pt-1 rounded-2xl align-baseline">
+      <i class="material-symbols-outlined !text-2xl h-fit">history</i>
+    </div>
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-secondary to-primary text-transparent bg-clip-text">
+      Tu historial emocional
+    </h2>
+  </div>
+
+  <div class="flex flex-col items-center gap-4">
+    @if (moods.isLoading()) {
+      @for (item of [1, 2, 3, 4, 5]; track $index) {
+        <div class="skeleton w-full min-h-28 rounded-2xl flex-1 bg-base-200 border-base-300"></div>
+      }
+    } @else if (moods.error()) {
+      <div class="alert alert-error my-3 flex-1">
+        <i class="material-symbols-outlined !text-xl">error</i>
+        <span>Error al cargar los estados de ánimo. Por favor intenta de nuevo.</span>
+        <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+          <i class="material-symbols-outlined !text-xl">refresh</i>
+        </button>
+      </div>
+    } @else {
+      @for (item of moods.value(); track item.id) {
+        <div
+          class="flex gap-4 flex-1 w-full items-center justify-between p-5 rounded-2xl border-l-4 hover:shadow-md hover:scale-[1.01] transition-all duration-300 border-l-primary"
+          [style.backgroundColor]="item.mood.color + '38'"
+        >
+          <div class="flex gap-4 items-center">
+            <img src="{{ item.mood.image }}" alt="Ícono de {{ item.mood.name }}"
+                 class="w-7 h-7 object-cover overflow-hidden" />
+            <div>
+              <p class="text-base-content text-base font-semibold">{{ item.mood.name }}</p>
+              <!-- FIXME: El Backend tiene que mandarme bien la fecha en formato ISO 8601-->
+              <relative-time
+                class="text-sm opacity-80"
+                datetime="{{ formatDateToISO8601(item.recordedDate) }}"
+                timeZone="America/Bogota"
+              ></relative-time>
+              @if (item.description && item.description !== '') {
+                <p class="text-base-content text-sm opacity-80 mt-2 italic">"{{ item.description }}"</p>
+              }
+            </div>
+          </div>
+        </div>
+      } @empty {
+        <div class="alert alert-error my-3 flex-1">
+          <i class="material-symbols-outlined !text-xl">error</i>
+          <span>No hay estados de ánimo registrados.</span>
+          <button class="btn btn-sm btn-outline hover:btn-error" (click)="registerMood()">
+            Registrar un estado de ánimo nuevo
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

@@ -12,6 +12,9 @@ import { CategoryService } from '../../core/services/category.service';
 import { ToastService } from '../../core/services/toast.service';
 import { blogs } from '../../shared/utils/local-data';
 import { BlogResponse } from '../../core/interfaces/blog-http.interface';
+import { DialogComponent } from '../../shared/components/dialog/dialog.component';
+import { BlogCommentsModalComponent } from './blog-comments-modal/blog-comments-modal.component';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-blog',
@@ -21,7 +24,9 @@ import { BlogResponse } from '../../core/interfaces/blog-http.interface';
     BlogTableComponent,
     BlogFilterComponent,
     BlogDetailComponent,
-    ModalOpenButtonComponent
+    DialogComponent,
+    ModalOpenButtonComponent,
+    BlogCommentsModalComponent
   ],
   templateUrl: './blog-page.component.html'
 })
@@ -32,10 +37,14 @@ export default class BlogPageComponent {
   toastService = inject(ToastService);
 
   blogs = rxResource({
-    loader: () => this.blogService.findAll()
+    loader: () => this.blogService.findAll().pipe(
+      map(response => response.result)
+    )
   });
   _categories = rxResource({
-    loader: () => this.categoryService.findAll()
+    loader: () => this.categoryService.findAll().pipe(
+      map(response => response.result)
+    )
   });
 
   categories = computed<Category[]>(() => {
@@ -50,7 +59,7 @@ export default class BlogPageComponent {
       temporal = temporal.filter(blog => blog.blog.title.toLowerCase().includes(filter.search.toLowerCase()));
     }
 
-    if (filter.category > 0) {
+    if (filter.category.length > 0) {
       temporal = temporal.filter(blog => blog.blog.category?.id === filter.category);
     }
 
@@ -63,12 +72,54 @@ export default class BlogPageComponent {
 
   private filter = signal<FilterDTO>({
     search: '',
-    category: 0,
+    category: '',
     status: Status.Published
   });
 
   setFilter(filter: FilterDTO) {
     this.filter.set(filter);
+  }
+
+  deleteBlog() {
+    this.blogService.delete(this.blogService.selectedBlog?.blog.id ?? '').subscribe({
+      next: () => {
+        this.toastService.addToast({
+          message: 'Blog deleted successfully',
+          type: 'success',
+          duration: 4000
+        });
+
+        this.reload();
+      },
+      error: (error) => {
+        this.toastService.addToast({
+          message: 'Error deleting blog',
+          type: 'error',
+          duration: 4000
+        });
+      }
+    });
+  }
+
+  rejectBlog() {
+    this.blogService.reject(this.blogService.selectedBlog?.blog.id ?? '').subscribe({
+      next: () => {
+        this.toastService.addToast({
+          message: 'Blog rejected successfully',
+          type: 'success',
+          duration: 4000
+        });
+
+        this.reload();
+      },
+      error: (error) => {
+        this.toastService.addToast({
+          message: 'Error rejecting blog',
+          type: 'error',
+          duration: 4000
+        });
+      }
+    });
   }
 
   reload() {

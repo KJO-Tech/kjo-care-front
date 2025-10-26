@@ -1,0 +1,89 @@
+<div class="p-4 rounded-xl shadow-xl card space-y-3 backdrop-blur-sm">
+  <div class="flex items-center gap-2">
+    <div class="bg-gradient-to-r from-primary to-accent text-primary-content px-2 pt-1 rounded-2xl align-baseline">
+      <i class="material-symbols-outlined !text-2xl h-fit">favorite</i>
+    </div>
+    <h2 class="text-2xl font-semibold bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
+      ¿Cómo te sientes ahora?
+    </h2>
+  </div>
+
+  <div class="flex flex-col items-center gap-4">
+    @if (moods.isLoading()) {
+      @for (item of [1, 2, 3, 4, 5]; track $index) {
+        <div class="skeleton w-full min-h-28 rounded-2xl flex-1 bg-base-200 border-base-300"></div>
+      }
+    } @else if (moods.error()) {
+      <div class="alert alert-error my-3 flex-1">
+        <i class="material-symbols-outlined !text-xl">error</i>
+        <span>Error al cargar los estados de ánimo. Por favor intenta de nuevo.</span>
+        <button class="btn btn-sm btn-outline hover:btn-error" (click)="reload()">
+          <i class="material-symbols-outlined !text-xl">refresh</i>
+        </button>
+      </div>
+    } @else {
+      @for (mood of moodsContent(); track mood.id) {
+        <div
+          class="flex gap-4 flex-1 w-full items-center justify-between p-4 rounded-2xl border-2 hover:shadow-md hover:scale-[1.01] transition-all duration-300"
+          [ngClass]="{
+            'border-primary bg-primary/5 scale-[1.01] shadow-lg': moodSelected() === mood.id,
+            'border-base-300 hover:border-primary/40': moodSelected() !== mood.id,
+          }"
+          (click)="selectMood(mood.id)"
+        >
+          <div class="flex gap-4 items-center">
+            <div
+              class="p-6 rounded-2xl shadow-lg"
+              [style.backgroundColor]="mood.color"
+            >
+              <img src="{{ mood.image }}" alt="Ícono de {{ mood.name }}" class="w-7 h-7 object-cover overflow-hidden" />
+            </div>
+            <div>
+              <p class="text-base-content text-lg font-semibold">{{ mood.name }}</p>
+              <p class="text-base-content/80 text-sm">{{ mood.description }}</p>
+            </div>
+          </div>
+
+          @if (moodSelected() === mood.id) {
+            <div
+              class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 border-primary bg-primary text-success-content">
+              <i class="material-symbols-outlined !text-xl">check</i>
+            </div>
+          }
+        </div>
+      } @empty {
+        <div class="alert alert-error my-3 flex-1">
+          <i class="material-symbols-outlined !text-xl">error</i>
+          <span>No hay estados de ánimo disponibles.</span>
+        </div>
+      }
+    }
+  </div>
+
+  @if (moodSelected() !== '') {
+    <div class="w-full mt-3 border-primary/50 bg-primary/5 p-4 rounded-xl border space-y-3">
+      <p class="text-base-content/80 text-base font-medium">¿Qué influyó en tu estado de ánimo? (opcional)</p>
+
+      <textarea
+        #description
+        [value]="moodDescription()"
+        (input)="moodDescription.set(description.value)"
+        placeholder="Ej: Tuve una buena conversación con un amigo, terminé un proyecto importante..."
+        rows="3"
+        class="bg-base-100 w-full rounded-2xl p-4 text-base-content border-2 border-primary/0 focus:border-primary/50 focus:outline-none transition resize-none"
+      ></textarea>
+
+      <button class="btn bg-gradient-to-r from-primary to-accent border-none text-primary-content w-full"
+              (click)="saveMyMood()"
+              [disabled]="isLoading()"
+      >
+        @if (isLoading()) {
+          <span class="loading loading-spinner"></span>
+        } @else {
+          <i class="material-icons-outlined !text-xl">add</i>
+        }
+        Guardar mi estado de ánimo
+      </button>
+    </div>
+  }
+</div>

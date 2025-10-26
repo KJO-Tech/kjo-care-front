@@ -1,9 +1,12 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom, isDevMode } from '@angular/core';
 import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { httpTokenInterceptor } from './core/interceptors/http-token.interceptor';
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
+import { provideServiceWorker } from '@angular/service-worker';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,13 +14,18 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes,
       withViewTransitions({
         skipInitialTransition: false,
-        onViewTransitionCreated: (transitionInfo) => {
-          console.log('Transición creada : ', transitionInfo);
-        }
       })
     ),
     provideHttpClient(
       withInterceptors([httpTokenInterceptor]), withFetch()
-    )
+    ),
+    importProvidersFrom(
+      NgxEchartsModule.forRoot({
+        echarts
+      })
+    ), provideServiceWorker('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            registrationStrategy: 'registerWhenStable:30000'
+          })
   ]
 };

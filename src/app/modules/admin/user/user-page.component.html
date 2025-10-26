@@ -1,0 +1,226 @@
+<div class="space-y-6">
+  <div class="flex justify-between items-center gap-2 flex-wrap">
+    <div>
+      <h1 class="text-3xl font-bold text-base-content">Gestión de Usuarios</h1>
+      <p class="text-base-content/70 mt-1">
+        Administra usuarios, roles y permisos del sistema
+      </p>
+    </div>
+    <modal-open-button
+      modalName="modal_user_create"
+      classes="btn btn-primary"
+      #modalCreateButton
+    >
+      <i class="material-icons-outlined mr-2">person_add</i>
+      Agregar Usuario
+    </modal-open-button>
+  </div>
+
+  @defer (on viewport; prefetch on idle) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="stat bg-base-200 rounded-box">
+        <div class="stat-figure text-primary">
+          <i class="material-icons-outlined text-3xl">group</i>
+        </div>
+        <div class="stat-title">Total Usuarios</div>
+        <div class="stat-value text-primary">{{ userStats().total }}</div>
+        <div class="stat-desc">En el sistema</div>
+      </div>
+
+      <div class="stat bg-base-200 rounded-box">
+        <div class="stat-figure text-success">
+          <i class="material-icons-outlined text-3xl">check_circle</i>
+        </div>
+        <div class="stat-title">Activos</div>
+        <div class="stat-value text-success">{{ userStats().enabled }}</div>
+        <div class="stat-desc">Usuarios habilitados</div>
+      </div>
+
+      <div class="stat bg-base-200 rounded-box">
+        <div class="stat-figure text-warning">
+          <i class="material-icons-outlined text-3xl">admin_panel_settings</i>
+        </div>
+        <div class="stat-title">Administradores</div>
+        <div class="stat-value text-warning">{{ userStats().admins }}</div>
+        <div class="stat-desc">Con privilegios admin</div>
+      </div>
+
+      <div class="stat bg-base-200 rounded-box">
+        <div class="stat-figure text-error">
+          <i class="material-icons-outlined text-3xl">cancel</i>
+        </div>
+        <div class="stat-title">Inactivos</div>
+        <div class="stat-value text-error">{{ userStats().disabled }}</div>
+        <div class="stat-desc">Usuarios deshabilitados</div>
+      </div>
+    </div>
+  } @placeholder (minimum 200ms) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      @for (item of [1, 2, 3, 4]; track item) {
+        <div class="stat bg-base-200 rounded-box animate-pulse">
+          <div class="stat-figure">
+            <div class="w-8 h-8 bg-base-300 rounded-full"></div>
+          </div>
+          <div class="stat-title">
+            <div class="h-4 bg-base-300 rounded w-20"></div>
+          </div>
+          <div class="stat-value">
+            <div class="h-8 bg-base-300 rounded w-16"></div>
+          </div>
+          <div class="stat-desc">
+            <div class="h-3 bg-base-300 rounded w-24"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Filtros y búsqueda -->
+  <div class="card bg-base-100 shadow-sm border border-base-300">
+    <div class="card-body">
+      <div
+        class="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between"
+      >
+        <div class="flex-1 space-y-2">
+          <h2 class="text-xl font-semibold">Lista de Usuarios</h2>
+          <p class="text-sm text-base-content/70">
+            Gestiona la información de usuarios registrados
+          </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
+          <div class="form-control">
+            <div class="input-group flex ">
+              <input
+                type="search"
+                class="input input-bordered w-full lg:w-80"
+                [value]="search()"
+                placeholder="Buscar por nombre o email..."
+                (input)="updateSearch(searchInput.value)"
+                #searchInput
+              />
+              <button class="btn btn-square btn-outline">
+                <i class="material-icons-outlined">search</i>
+              </button>
+            </div>
+          </div>
+
+          <select
+            class="select select-bordered"
+            [value]="selectedRole()"
+            (change)="updateRoleFilter(roleSelect.value)"
+            #roleSelect
+          >
+            <option value="all">Todos los roles</option>
+            <option value="admin">Administradores</option>
+            <option value="user">Usuarios</option>
+          </select>
+
+          <label class="label cursor-pointer gap-2 whitespace-nowrap">
+            <span class="label-text">Mostrar inactivos</span>
+            <input
+              type="checkbox"
+              class="toggle toggle-primary"
+              [checked]="showDisabled()"
+              (change)="toggleShowDisabled()"
+            />
+          </label>
+        </div>
+      </div>
+
+      @if (users.isLoading()) {
+        <div class="flex justify-center py-8">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+        </div>
+      } @else {
+        @defer (
+          when !users.isLoading() && filteredUsers().length > 0;
+          on immediate
+          ) {
+          <user-table
+            [users]="filteredUsers()"
+          />
+<!--            (userToggled)="toggleUserStatus($event)"-->
+<!--            (userRestored)="restoreUser($event)"-->
+        } @placeholder (minimum 300ms) {
+          <div class="space-y-4 mt-4">
+            @for (item of [1, 2, 3, 4, 5]; track item) {
+              <div class="flex items-center space-x-4 animate-pulse">
+                <div class="w-12 h-12 bg-base-300 rounded-full"></div>
+                <div class="flex-1 space-y-2">
+                  <div class="h-4 bg-base-300 rounded w-3/4"></div>
+                  <div class="h-3 bg-base-300 rounded w-1/2"></div>
+                </div>
+                <div class="flex gap-2">
+                  <div class="w-8 h-8 bg-base-300 rounded"></div>
+                  <div class="w-8 h-8 bg-base-300 rounded"></div>
+                </div>
+              </div>
+            }
+          </div>
+        } @error {
+          <div class="alert alert-error mt-4">
+            <i class="material-icons-outlined">error</i>
+            <span>Error al cargar la tabla de usuarios</span>
+          </div>
+        }
+      }
+
+      @if (!users.isLoading() && filteredUsers().length === 0) {
+        <div class="text-center py-12">
+          <i class="material-icons-outlined text-6xl text-base-300 mb-4"
+          >group_off</i
+          >
+          <h3 class="text-lg font-semibold mb-2">No se encontraron usuarios</h3>
+          <p class="text-base-content/70">
+            {{
+              search()
+                ? "Intenta con otros términos de búsqueda"
+                : "Comienza agregando tu primer usuario"
+            }}
+          </p>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+@defer (
+  on interaction(modalCreateButton);
+  prefetch on hover(modalCreateButton);
+  hydrate on interaction
+  ) {
+  <user-modal type="create" (reload)="reload()"></user-modal>
+} @placeholder {
+  <div class="hidden"></div>
+}
+
+@defer (when selectedUser()?.id; on immediate; hydrate on immediate) {
+  <user-modal
+    [type]="'edit'"
+    [user]="selectedUser()"
+    (reload)="reload()"
+  ></user-modal>
+} @loading (after 100ms; minimum 200ms) {
+  <div class="modal modal-open">
+    <div class="modal-box">
+      <div class="flex justify-center">
+        <span class="loading loading-spinner loading-lg"></span>
+      </div>
+    </div>
+  </div>
+}
+
+@defer (when selectedUser()?.id; prefetch on idle; hydrate never) {
+  <app-dialog
+    [title]="'Eliminar usuario'"
+    [message]="
+      '¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.'
+    "
+    [modalName]="'modal_user_delete'"
+    [buttonText]="'Eliminar'"
+    (callback)="deleteUser()"
+  ></app-dialog>
+} @placeholder {
+  <div class="hidden"></div>
+}

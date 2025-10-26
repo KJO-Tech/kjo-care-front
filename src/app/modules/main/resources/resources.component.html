@@ -1,0 +1,16 @@
+<div class="space-y-3">
+  <div role="tablist" class="tabs tabs-box p-2 rounded-3xl shadow-lg bg-base-100/40 sticky top-16 z-10 backdrop-blur-xl">
+    @for (link of links; track $index) {
+      <a
+        role="tab"
+        class="tab text-sm sm:text-base font-medium flex-1"
+        [routerLink]="link.path"
+        routerLinkActive="tab-active bg-gradient-to-r from-primary to-accent text-primary-content hover:text-primary-content"
+      >
+        {{ link.name }}
+      </a>
+    }
+  </div>
+
+  <router-outlet />
+</div>

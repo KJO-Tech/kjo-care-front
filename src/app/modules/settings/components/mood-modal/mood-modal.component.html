@@ -31,9 +31,45 @@
           <textarea
             class="textarea textarea-bordered"
             formControlName="description"
-            placeholder="Añade una descripcion"
+            placeholder="Añade una descripción"
             rows="2"
           ></textarea>
+        </div>
+
+        <div class="form-control flex flex-col">
+          <label class="label">
+            <span class="label-text">Imagen</span>
+            @if (imageControl?.invalid && imageControl?.touched) {
+              <span class="label-text-alt text-error"
+              >La imagen es requerido</span
+              >
+            }
+          </label>
+          <input
+            type="url"
+            class="input input-bordered"
+            formControlName="image"
+            placeholder="Añade la url de una imagen"
+            [class.input-error]="imageControl?.invalid && imageControl?.touched"
+          />
+        </div>
+
+        <div class="form-control flex flex-col">
+          <label class="label">
+            <span class="label-text">Valor</span>
+            @if (valueControl?.invalid && valueControl?.touched) {
+              <span class="label-text-alt text-error"
+              >El valor es requerido</span
+              >
+            }
+          </label>
+          <input
+            type="number"
+            class="input input-bordered"
+            formControlName="value"
+            placeholder="0"
+            [class.input-error]="valueControl?.invalid && valueControl?.touched"
+          />
         </div>
 
         <div class="form-control mt-4">

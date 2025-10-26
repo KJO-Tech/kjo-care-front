@@ -22,7 +22,7 @@ export class SidebarComponent {
     },
     {
       name: 'Health Centers',
-      path: '/dashboard/health-centers'
+      path: '/dashboard/map'
     },
     {
       name: 'Recursos de Emergencia',
@@ -33,6 +33,14 @@ export class SidebarComponent {
       path: '/dashboard/blog-management'
     },
     {
+      name: 'Activities Management',
+      path: '/dashboard/activity-categories'
+    },
+    {
+      name: 'Daily Exercises',
+      path: '/dashboard/daily-exercises'
+    },
+    {
       name: 'Mood Analytics',
       path: '/dashboard/moods'
     },
@@ -40,9 +48,9 @@ export class SidebarComponent {
       name: 'Settings',
       path: '/dashboard/settings'
     },
-    {
-      name: 'Audit logs',
-      path: '/dashboard/audit-logs'
-    }
+    // {
+    //   name: 'Audit logs',
+    //   path: '/dashboard/audit-logs'
+    // }
   ];
 }

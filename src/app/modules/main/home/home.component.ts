@@ -1,25 +1,28 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { AchievementsComponent } from './components/achievements/achievements.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { HomeMoodRegisterComponent } from './components/home-mood-register/home-mood-register.component';
+import { WeeklyHistoryComponent } from './components/weekly-history/weekly-history.component';
+import { DailyActivitiesComponent } from './components/daily-activities/daily-activities.component';
 import { KeycloakService } from '../../auth/services/keycloak.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   imports: [
-    RouterLink
+    AchievementsComponent,
+    StatisticsComponent,
+    HomeMoodRegisterComponent,
+    WeeklyHistoryComponent,
+    DailyActivitiesComponent
   ],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
+export default class HomeComponent {
+  userService = inject(KeycloakService);
 
- private keycloakService = inject(KeycloakService);
-
-  async logout() {
-    await this.keycloakService.logout();
-  }
-
-  async account() {
-    await this.keycloakService.goToAccountManagement();
-  }
-
+  userName = computed(() => {
+    const names = this.userService.profile()?.firstName ?? 'Usuario';
+    return names.split(' ')[0];
+  });
 }

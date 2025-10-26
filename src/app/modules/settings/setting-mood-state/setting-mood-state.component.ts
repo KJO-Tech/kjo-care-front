@@ -6,6 +6,7 @@ import { MoodModalComponent } from '../components/mood-modal/mood-modal.componen
 import { MoodStateService } from '../../../core/services/mood-tracking.service';
 import type { Content } from '../../../core/models/mood.model';
 import type { MoodStateRequest } from '../../../core/interfaces/mood-http.interface';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'setting-mood-state',
@@ -17,7 +18,9 @@ export default class SettingMoodStateComponent {
   private moodStateService = inject(MoodStateService);
 
   loadMoodTracking = rxResource({
-    loader: () => this.moodStateService.getAllMoods()
+    loader: () => this.moodStateService.getAllMoods().pipe(
+      map((response) => response.result)
+    )
   });
 
   constructor() {
@@ -38,11 +41,11 @@ export default class SettingMoodStateComponent {
   isSaving = signal<boolean>(false);
   showSuccessToast = signal<boolean>(false);
   successMessage = signal<string>('Configuración guardada exitosamente!');
-  deletingMoodId = signal<number | null>(null);
+  deletingMoodId = signal<string | null>(null);
 
   addMoodState(): void {
     const newMood: Content = {
-      id: 0,
+      id: "",
       name: '',
       description: '',
       state: 'active',
@@ -60,7 +63,7 @@ export default class SettingMoodStateComponent {
     });
   }
 
-  toggleMoodState(id: number): void {
+  toggleMoodState(id: string): void {
     this.isSaving.set(true);
 
     this.moodStateService.toggleMoodState(id).subscribe({
@@ -71,7 +74,7 @@ export default class SettingMoodStateComponent {
           return {
             ...currentData,
             content: currentData.content.map(mood =>
-              mood.id === id ? { ...mood, isActive: response.isActive } : mood
+              mood.id === id ? { ...mood, isActive: response.result.isActive } : mood
             )
           };
         });
@@ -98,7 +101,7 @@ export default class SettingMoodStateComponent {
     });
   }
 
-  deleteMood(id: number): void {
+  deleteMood(id: string): void {
     this.deletingMoodId.set(id);
     const modal = document.getElementById('delete_confirmation_modal') as HTMLDialogElement;
     if (modal) modal.showModal();
@@ -137,6 +140,7 @@ export default class SettingMoodStateComponent {
       name: mood.name,
       description: mood.description,
       color: mood.color,
+      value: mood.value || 1,
       image: mood.image || ''
     };
 
@@ -149,13 +153,16 @@ export default class SettingMoodStateComponent {
           this.loadMoodTracking.update(currentData => {
             if (!currentData) return currentData;
 
+            const result = response.result;
+
             const newMood: Content = {
-              id: response.id,
-              name: response.name,
-              description: response.description,
-              image: response.image,
-              color: response.color,
-              isActive: response.isActive,
+              id: result.id,
+              name: result.name,
+              description: result.description,
+              image: result.image,
+              value: result.value,
+              color: result.color,
+              isActive: result.isActive,
               state: 'active'
             };
 
@@ -185,16 +192,19 @@ export default class SettingMoodStateComponent {
           this.loadMoodTracking.update(currentData => {
             if (!currentData) return currentData;
 
+            const result = response.result;
+
             return {
               ...currentData,
               content: currentData.content.map(item =>
                 item.id === id ? {
                   ...item,
-                  name: response.name,
-                  description: response.description,
-                  image: response.image,
-                  color: response.color,
-                  isActive: response.isActive
+                  name: result.name,
+                  description: result.description,
+                  image: result.image,
+                  color: result.color,
+                  value: result.value,
+                  isActive: result.isActive
                 } : item
               )
             };
