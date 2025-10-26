@@ -23,7 +23,7 @@
         </button>
       </div>
     } @else {
-      @for (mood of moods.value()!.content.slice(0, 5); track mood.id) {
+      @for (mood of moodsContent().slice(0, 5); track mood.id) {
         <div
           class="p-2 max-sm:py-4 flex-1 rounded-lg shadow-md flex flex-col items-center justify-center gap-2.5 hover:cursor-pointer transition-all hover:scale-110 hover:opacity-100"
           [style.backgroundColor]="mood.color"

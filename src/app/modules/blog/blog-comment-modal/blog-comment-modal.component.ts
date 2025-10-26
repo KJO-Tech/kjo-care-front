@@ -19,8 +19,8 @@ export class BlogCommentModalComponent {
 
   reload = output();
 
-  title = signal('Add new comment');
-  nameButton = signal('Save');
+  title = signal('Agregar comentario');
+  nameButton = signal('Guardar');
 
   commentForm = this.fb.group({
     content: ['', [Validators.required, Validators.minLength(1)]]
@@ -28,12 +28,12 @@ export class BlogCommentModalComponent {
 
   constructor() {
     effect(() => {
-      this.title.set('Add new comment');
-      this.nameButton.set('Save');
+      this.title.set('Agregar comentario');
+      this.nameButton.set('Guardar');
 
       if (this.commentService._selectedComment().id.length > 0) {
-        this.title.set('Edit comment');
-        this.nameButton.set('Update');
+        this.title.set('Editar comentario');
+        this.nameButton.set('Actualizar');
 
         this.commentForm.patchValue({
           content: this.commentService.selectedComment.content
@@ -41,8 +41,8 @@ export class BlogCommentModalComponent {
       }
 
       if (this.commentService._selectedComment().commentParentId && this.commentService._selectedComment().id.length === 0) {
-        this.title.set('Reply to comment');
-        this.nameButton.set('Reply');
+        this.title.set('Responder comentario');
+        this.nameButton.set('Guardar');
         this.commentForm.patchValue({
           content: ''
         });
@@ -69,7 +69,7 @@ export class BlogCommentModalComponent {
         .subscribe({
           next: () => {
             this.toastService.addToast({
-              message: 'Comment updated successfully',
+              message: 'Comentario actualizado con éxito',
               type: 'success',
               duration: 4000
             });
@@ -80,7 +80,7 @@ export class BlogCommentModalComponent {
           },
           error: (error) => {
             this.toastService.addToast({
-              message: error.message || 'Error updating comment',
+              message: 'Error al actualizar el comentario',
               type: 'error',
               duration: 4000
             });
@@ -91,7 +91,7 @@ export class BlogCommentModalComponent {
         .subscribe({
           next: () => {
             this.toastService.addToast({
-              message: 'Comment created successfully',
+              message: 'Comentario creado con éxito',
               type: 'success',
               duration: 4000
             });
@@ -102,7 +102,7 @@ export class BlogCommentModalComponent {
           },
           error: (error) => {
             this.toastService.addToast({
-              message: error.message || 'Error creating comment',
+              message: 'Error al crear el comentario',
               type: 'error',
               duration: 4000
             });

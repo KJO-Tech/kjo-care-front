@@ -36,6 +36,14 @@ export class HealthCenterService {
     return this.http.get<ApiResponse<HealthCenterResponse[]>>(`${this.baseUrl}/all`);
   }
 
+  getAllActive(): Observable<ApiResponse<HealthCenterResponse[]>> {
+    return this.http.get<ApiResponse<HealthCenterResponse[]>>(`${this.baseUrl}`);
+  }
+
+  getNearbyHealthCenters(latitude: number, longitude: number, distanceKm: number = 10): Observable<ApiResponse<HealthCenterResponse[]>> {
+    return this.http.get<ApiResponse<HealthCenterResponse[]>>(`${this.baseUrl}/nearby?lat=${latitude}&lon=${longitude}&distanceKm=${distanceKm}`);
+  }
+
   //
   // getStats(): Observable<EmergencyResourceStats> {
   //   return this.http.get<EmergencyResourceStats>(`${this.baseUrl}/stats`);

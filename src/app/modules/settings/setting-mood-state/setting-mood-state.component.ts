@@ -140,6 +140,7 @@ export default class SettingMoodStateComponent {
       name: mood.name,
       description: mood.description,
       color: mood.color,
+      value: mood.value || 1,
       image: mood.image || ''
     };
 
@@ -159,6 +160,7 @@ export default class SettingMoodStateComponent {
               name: result.name,
               description: result.description,
               image: result.image,
+              value: result.value,
               color: result.color,
               isActive: result.isActive,
               state: 'active'
@@ -201,6 +203,7 @@ export default class SettingMoodStateComponent {
                   description: result.description,
                   image: result.image,
                   color: result.color,
+                  value: result.value,
                   isActive: result.isActive
                 } : item
               )

@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 
 import { Blog } from '../models/blog';
 import { blogs } from '../../shared/utils/local-data';
-import { BlogDetailResponse, BlogResponse } from '../interfaces/blog-http.interface';
+import { BlogDetailResponse, BlogResponse, BlogsPublishedResponse } from '../interfaces/blog-http.interface';
 import { ApiResponse } from '../../shared/interfaces/api-response';
 
 @Injectable({
@@ -32,15 +32,14 @@ export class BlogService {
     return this.http.get<ApiResponse<BlogResponse[]>>(`${this.baseUrl}/all`);
   }
 
-  // findAll(): Observable<Blog[]> {
-  //   return this.http.get<{
-  //     content: Blog[];
-  //     page: number;
-  //     size: number;
-  //   }>(`${this.baseUrl}/all`).pipe(
-  //     map(({ content }) => content)
-  //   );
-  // }
+  findAllPublished(): Observable<ApiResponse<BlogResponse[]>> {
+    return this.http.get<ApiResponse<BlogResponse[]>>(`${this.baseUrl}/published`);
+  }
+
+  getPublished(page: number = 0, size: number = 10): Observable<ApiResponse<BlogsPublishedResponse>> {
+    return this.http.get<ApiResponse<BlogsPublishedResponse>>(`${this.baseUrl}?page=${page}&size=${size}`);
+  }
+
 
   getById(id: string): Observable<ApiResponse<BlogDetailResponse>> {
     return this.http.get<ApiResponse<BlogDetailResponse>>(`${this.baseUrl}/${id}`);
@@ -52,6 +51,10 @@ export class BlogService {
 
   update(request: FormData, id: string): Observable<ApiResponse<Blog>> {
     return this.http.put<ApiResponse<Blog>>(`${this.baseUrl}/${id}`, request);
+  }
+
+  reject(id: string): Observable<ApiResponse<void>> {
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/${id}/reject`, null);
   }
 
   delete(id: string): Observable<ApiResponse<void>> {

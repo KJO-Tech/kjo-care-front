@@ -8,8 +8,8 @@
 @plugin "daisyui/theme" {
   name: "cosmic-light";
   default: true;
-  /*prefersdark: false;*/
-  /*color-scheme: "light";*/
+  prefersdark: false;
+  color-scheme: "light";
 
   /* Fondos */
   --color-base-100: oklch(97% 0.01 280);
@@ -53,8 +53,8 @@
 @plugin "daisyui/theme" {
   name: "cosmic-dark";
   default: false;
-  /*prefersdark: true;*/
-  /*color-scheme: "dark";*/
+  prefersdark: true;
+  color-scheme: "dark";
 
   /* Fondos */
   --color-base-100: oklch(8% 0.03 290);

@@ -7,7 +7,7 @@ export const authGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   if (!keycloakService.isLoading() && keycloakService.keycloak.isTokenExpired()) {
-    router.navigate(['login']);
+    router.navigate(['app']);
     // Evita que la página entre en un ciclo infinito de recarga
     return false;
   }

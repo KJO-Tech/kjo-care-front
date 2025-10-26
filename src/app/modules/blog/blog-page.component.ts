@@ -101,6 +101,27 @@ export default class BlogPageComponent {
     });
   }
 
+  rejectBlog() {
+    this.blogService.reject(this.blogService.selectedBlog?.blog.id ?? '').subscribe({
+      next: () => {
+        this.toastService.addToast({
+          message: 'Blog rejected successfully',
+          type: 'success',
+          duration: 4000
+        });
+
+        this.reload();
+      },
+      error: (error) => {
+        this.toastService.addToast({
+          message: 'Error rejecting blog',
+          type: 'error',
+          duration: 4000
+        });
+      }
+    });
+  }
+
   reload() {
     this.blogs.reload();
   }

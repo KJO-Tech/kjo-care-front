@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MoodStateService } from '../../../../core/services/mood-tracking.service';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -31,6 +31,11 @@ export default class MoodRegisterComponent {
     }
   });
 
+  moodsContent = computed(() => {
+    let moods = this.moods.value()?.content ?? []
+    return moods.filter(mood => mood.isActive).sort((a, b) => (b.value || 0) - (a.value || 0))
+  })
+
   moodId = signal<string>('');
   moodSelected = signal<string>('');
   moodDescription = signal<string>('');
@@ -61,7 +66,7 @@ export default class MoodRegisterComponent {
     if (this.moodSelected() !== '') {
       this.isLoading.set(true);
 
-      this.moodUserService.saveMyMood(this.moodSelected()).subscribe({
+      this.moodUserService.saveMyMood(this.moodSelected(), this.moodDescription()).subscribe({
         next: response => {
           if (response.success) {
             this.router.navigate(['/app/mood/recorded']);

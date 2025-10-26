@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NotificationsComponent } from '../../shared/components/layout/notifications/notifications.component';
 import { NgClass } from '@angular/common';
 import { ThemeControllerComponent } from '../../shared/components/layout/theme-controller/theme-controller.component';
+import { KeycloakService } from '../auth/services/keycloak.service';
 
 @Component({
   selector: 'app-main',
@@ -17,6 +18,9 @@ import { ThemeControllerComponent } from '../../shared/components/layout/theme-c
   templateUrl: './main.component.html'
 })
 export default class MainComponent {
+  private keycloakService = inject(KeycloakService);
+
+  isAdmin = this.keycloakService.isAdmin
 
   links = [
     {

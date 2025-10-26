@@ -22,6 +22,7 @@ import { HealthCenterDetailComponent } from './health-center-detail/health-cente
 import { DialogComponent } from '../../shared/components/dialog/dialog.component';
 import { ModalOpenButtonComponent } from '../../shared/components/modal-open-button/modal-open-button.component';
 import { map } from 'rxjs';
+import { calculateDistance } from '../../shared/utils/map-functions';
 
 @Component({
   selector: 'app-health-center-map',
@@ -338,24 +339,6 @@ export default class HealthCenterMapComponent implements OnInit {
     });
   }
 
-  calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // Radio de la Tierra en km
-    const dLat = this.toRadians(lat2 - lat1);
-    const dLon = this.toRadians(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.toRadians(lat1)) *
-      Math.cos(this.toRadians(lat2)) *
-      Math.sin(dLon / 2) *
-      Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; // Distancia en km
-  }
-
-  toRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
-  }
-
   async findNearbyCenters(radius: number = 5) {
     try {
       const userCoords = await this.getUserLocation();
@@ -367,7 +350,7 @@ export default class HealthCenterMapComponent implements OnInit {
 
         if (lat === null || lon === null) return false;
 
-        const distance = this.calculateDistance(
+        const distance = calculateDistance(
           userCoords.latitude,
           userCoords.longitude,
           lat,

@@ -11,8 +11,8 @@ export class MoodTrackingUserService {
   private http = inject(HttpClient);
   private readonly baseUrl = `${environment.apiUrl}/api/mind/mood-tracking/user-mood`;
 
-  saveMyMood(moodId: string) {
-    return this.http.post<ApiResponse<UserMood>>(`${this.baseUrl}/track-mood`, { moodId });
+  saveMyMood(moodId: string, description: string) {
+    return this.http.post<ApiResponse<UserMood>>(`${this.baseUrl}/track-mood`, { moodId, description });
   }
 
   getMyMoods() {

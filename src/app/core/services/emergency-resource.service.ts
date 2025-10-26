@@ -35,6 +35,10 @@ export class EmergencyResourceService {
   });
 
   getAll(): Observable<ApiResponse<EmergencyResourceResponse[]>> {
+    return this.http.get<ApiResponse<EmergencyResourceResponse[]>>(`${this.baseUrl}/all`);
+  }
+
+  getAllActive(): Observable<ApiResponse<EmergencyResourceResponse[]>> {
     return this.http.get<ApiResponse<EmergencyResourceResponse[]>>(`${this.baseUrl}`);
   }
 

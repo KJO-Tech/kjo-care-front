@@ -1,10 +1,17 @@
 import { Blog } from '../models/blog';
 import { UserInfo } from './user-http.interface';
 
+export interface BlogsPublishedResponse {
+  content: BlogResponse[];
+  page: number;
+  size: number;
+}
+
 export interface BlogResponse {
   blog: Blog;
   reactionCount: number;
   commentCount: number;
+  hasLiked: boolean;
 }
 
 export interface BlogDetailResponse {
@@ -13,6 +20,7 @@ export interface BlogDetailResponse {
   commentCount: number;
   comments: CommentSummary[];
   accesible: boolean;
+  hasLiked: boolean;
 }
 
 export interface CommentSummary {
@@ -23,4 +31,11 @@ export interface CommentSummary {
   commentDate: string;
   modifiedDate: string;
   childrenComments: CommentSummary[];
+}
+
+export interface ReactionResponse {
+  blogId: string,
+  userId: UserInfo,
+  type: string,
+  reactionDate: string
 }

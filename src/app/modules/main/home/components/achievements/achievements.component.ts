@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { EmergencyResourceService } from '../../../../../core/services/emergency-resource.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { AnalyticsService } from '../../../../../core/services/analytics.service';
 
 @Component({
   selector: 'home-achievements',
@@ -10,11 +11,11 @@ import { map } from 'rxjs';
 })
 export class AchievementsComponent {
 
-  resourceService = inject(EmergencyResourceService);
+  analyticsService = inject(AnalyticsService);
 
   stats = rxResource({
-    loader: () => this.resourceService.getStats().pipe(
-      map(response => response.result)
+    loader: () => this.analyticsService.getSummary().pipe(
+      map((response) => response.result)
     )
   });
 

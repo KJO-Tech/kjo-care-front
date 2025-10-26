@@ -25,6 +25,17 @@
     </li>
     <li>
       <modal-open-button
+        [modalName]="'modal_blog_reject'"
+        [label]="'Reject'"
+        [type]="'dropdown'"
+        class="p-0 w-full flex text-warning"
+        (click)="blogService.selectedBlog = blog()"
+      >
+        <i class="material-symbols-outlined !text-xl mr-2">block</i>
+      </modal-open-button>
+    </li>
+    <li>
+      <modal-open-button
         [modalName]="'modal_blog_delete'"
         [label]="'Delete'"
         [type]="'dropdown'"

@@ -27,7 +27,7 @@
         </div>
       } @else {
         <ul class="list">
-          @for (comment of blog.value()?.comments; track comment; ) {
+          @for (comment of blog.value()?.comments || []; track comment; ) {
             <blog-comment
               [comment]="comment"
               [commentParentId]="null"

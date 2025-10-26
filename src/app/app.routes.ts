@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
+import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -25,19 +26,26 @@ export const routes: Routes = [
       { path: 'moods', loadChildren: () => import('./modules/mood-analytics/mood-analytics.routes') },
       { path: 'settings', loadChildren: () => import('./modules/settings/settings.routes') },
       // { path: 'health-centers', loadComponent: () => import('./modules/health-center/health-center.component') },
-      { path: 'map', loadComponent: () => import('./modules/health-center-map/health-center-map.component') }
+      { path: 'map', loadComponent: () => import('./modules/health-center-map/health-center-map.component') },
+      { path: 'activity-categories', loadComponent: () => import('./modules/admin/activity-category/activity-category.component') },
+      { path: 'daily-exercises', loadComponent: () => import('./modules/admin/daily-exercise/daily-exercise.component') },
+      { path: '**', redirectTo: '' }
     ],
-    canActivate: [authGuard]
+    canActivate: [adminGuard]
   },
   {
     path: 'app',
     loadComponent: () => import('./modules/main/main.component'),
     children: [
       { path: '', loadComponent: () => import('./modules/main/home/home.component') },
+      { path: 'exercises/:id', loadComponent: () => import('./modules/main/exercises/exercises.component') },
       { path: 'mood', loadChildren: () => import('./modules/main/mood/mood.routes') },
-      { path: 'community', loadComponent: () => import('./modules/main/community/community.component') },
-      { path: 'resources', loadComponent: () => import('./modules/main/resources/resources.component') },
+      { path: 'community', loadChildren: () => import('./modules/main/community/community.routes') },
+      { path: 'resources', loadChildren: () => import('./modules/main/resources/resources.routes') },
       { path: 'profile', loadComponent: () => import('./modules/main/profile/profile.component') },
-    ]
+      { path: 'notifications', loadComponent: () => import('./modules/main/notifications/notifications-page.component') },
+      { path: '**', redirectTo: '' }
+    ],
+    canActivate: [authGuard]
   }
 ];

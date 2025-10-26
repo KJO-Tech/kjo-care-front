@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { MoodStateService } from '../../../../../core/services/mood-tracking.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
@@ -24,6 +24,11 @@ export class HomeMoodRegisterComponent {
       );
     }
   });
+
+  moodsContent = computed(() => {
+    let moods = this.moods.value()?.content ?? []
+    return moods.filter(mood => mood.isActive).sort((a, b) => (b.value || 0) - (a.value || 0))
+  })
 
   moodSelected = signal<string>('');
 
