@@ -38,6 +38,7 @@ export const routes: Routes = [
     loadComponent: () => import('./modules/main/main.component'),
     children: [
       { path: '', loadComponent: () => import('./modules/main/home/home.component') },
+      { path: 'exercises/:id', loadComponent: () => import('./modules/main/exercises/exercises.component') },
       { path: 'mood', loadChildren: () => import('./modules/main/mood/mood.routes') },
       { path: 'community', loadChildren: () => import('./modules/main/community/community.routes') },
       { path: 'resources', loadChildren: () => import('./modules/main/resources/resources.routes') },

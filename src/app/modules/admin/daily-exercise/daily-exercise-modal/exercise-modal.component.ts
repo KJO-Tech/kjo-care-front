@@ -212,6 +212,7 @@ export class ExerciseModalComponent implements OnInit {
           contentType: this.exercise()?.contentType,
           contentUrl: this.exercise()?.contentUrl,
           thumbnailUrl: this.exercise()?.thumbnailUrl,
+          duration: this.exercise()?.durationMinutes,
           category: this.exercise()?.categoryId,
           difficulty: this.exercise()?.difficulty
         });

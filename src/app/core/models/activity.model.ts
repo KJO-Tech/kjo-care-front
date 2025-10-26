@@ -1,7 +1,7 @@
 export interface ActivityCategory {
   id: string;
-  name: string ;
-  description: string ;
+  name: string;
+  description: string;
   imageUrl: string;
   createdAt: string;
   updatedAt: string;
@@ -27,6 +27,15 @@ export interface DailyExerciseResponse {
 }
 
 export type DailyExerciseRequest = Omit<DailyExerciseResponse, 'id' | 'categoryName' | 'contentTypeDisplay' | 'difficultyDisplay' | 'createdAt' | 'updatedAt'>
+
+export interface AssignmentResponse {
+  id: string;
+  userId: string;
+  exercise: Omit<DailyExerciseResponse, 'createdAt' | 'updatedAt'>;
+  completed: boolean;
+  assignedAt: string;
+  completedAt: string;
+}
 
 export enum ExerciseContentType {
   TEXTO = 'TEXTO',
