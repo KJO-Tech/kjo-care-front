@@ -12,4 +12,5 @@ export interface Content {
   image:       string;
   color:       string;
   isActive:    boolean;
+  value?:      number;
 }

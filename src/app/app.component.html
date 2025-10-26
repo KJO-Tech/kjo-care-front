@@ -13,7 +13,7 @@
         </p>
         <div class="card-actions flex-col w-full mt-3 gap-1">
           @if (keycloakService.isLoading()) {
-            <button (click)="login()" class="btn w-full btn-primary">
+            <button class="btn w-full btn-primary">
               <span class="loading loading-spinner"></span>
             </button>
           } @else {
