@@ -53,6 +53,10 @@ export class BlogService {
     return this.http.put<ApiResponse<Blog>>(`${this.baseUrl}/${id}`, request);
   }
 
+  reject(id: string): Observable<ApiResponse<void>> {
+    return this.http.put<ApiResponse<void>>(`${this.baseUrl}/${id}/reject`, null);
+  }
+
   delete(id: string): Observable<ApiResponse<void>> {
     return this.http.delete<ApiResponse<void>>(`${this.baseUrl}/${id}`);
   }

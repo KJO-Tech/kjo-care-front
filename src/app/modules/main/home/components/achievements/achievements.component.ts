@@ -14,7 +14,9 @@ export class AchievementsComponent {
   analyticsService = inject(AnalyticsService);
 
   stats = rxResource({
-    loader: () => this.analyticsService.getSummary()
+    loader: () => this.analyticsService.getSummary().pipe(
+      map((response) => response.result)
+    )
   });
 
   reload() {

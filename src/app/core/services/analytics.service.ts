@@ -47,11 +47,11 @@ export class AnalyticsService {
   }
 
   getSummary() {
-    return this.http.get<Summary>(`${this.analyticsUrl}/summary`);
+    return this.http.get<ApiResponse<Summary>>(`${this.analyticsUrl}/summary`);
   }
 
   getHomeStats() {
-    return this.http.get<DashboardSummary>(`${this.analyticsUrl}/summary-dashboard`);
+    return this.http.get<ApiResponse<DashboardSummary>>(`${this.analyticsUrl}/summary-dashboard`);
   }
 
 }

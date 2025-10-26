@@ -54,6 +54,14 @@
             </modal-open-button>
 
             <modal-open-button
+              [modalName]="'modal_blog_reject'"
+              [type]="'icon'"
+              (click)="blogService.selectedBlog = blog"
+            >
+              <i class="material-symbols-outlined !text-xl">block</i>
+            </modal-open-button>
+
+            <modal-open-button
               [modalName]="'modal_blog_delete'"
               [type]="'icon'"
               (click)="blogService.selectedBlog = blog"

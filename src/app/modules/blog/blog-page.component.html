@@ -73,4 +73,12 @@
   (callback)="deleteBlog()"
 ></app-dialog>
 
+<app-dialog
+  [title]="'Reject blog'"
+  [message]="'Are you sure you want to reject this blog?'"
+  [modalName]="'modal_blog_reject'"
+  [buttonText]="'Reject'"
+  (callback)="rejectBlog()"
+></app-dialog>
+
 <blog-comments-modal />

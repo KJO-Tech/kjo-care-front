@@ -82,6 +82,7 @@
                       @if (youtubeVideoId(); as videoId) {
                         <youtube-player
                           [videoId]="videoId"
+                          class="*:max-w-[72dvw] *:h-full "
                           [playerVars]="{ autoplay: 0, controls: 1, modestbranding: 1 }"
                         />
                       } @else if (isStandardVideo()) {

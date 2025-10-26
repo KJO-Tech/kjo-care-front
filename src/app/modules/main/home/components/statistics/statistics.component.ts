@@ -1,7 +1,7 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { EmergencyResourceService } from '../../../../../core/services/emergency-resource.service';
-import { map } from 'rxjs';
+import { map, NEVER } from 'rxjs';
 import { AnalyticsService } from '../../../../../core/services/analytics.service';
 import { MoodTrackingUserService } from '../../../../../core/services/mood-user.service';
 
@@ -14,8 +14,13 @@ export class StatisticsComponent {
   private moodUserService = inject(MoodTrackingUserService);
   analyticsService = inject(AnalyticsService);
 
+  timeOut = signal(false)
+
   stats = rxResource({
-    loader: () => this.analyticsService.getHomeStats()
+    request: () => this.timeOut(),
+    loader: () => this.timeOut() ? this.analyticsService.getHomeStats().pipe(
+      map((response) => response.result)
+    ) : NEVER
   });
 
   moods = rxResource({
@@ -27,6 +32,10 @@ export class StatisticsComponent {
   });
 
   countCheckins = computed(() => this.moods.value()?.length ?? 0)
+
+  constructor() {
+    setTimeout(() => {this.timeOut.set(true)}, 2000)
+  }
 
   reload() {
     this.stats.reload();
