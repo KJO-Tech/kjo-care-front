@@ -18,23 +18,23 @@
       } @else if (stats.error()) {
         <div class="stat-value text-2xl font-bold">00</div>
       } @else {
-        <div class="stat-value text-2xl font-bold">7</div>
+        <div class="stat-value text-2xl font-bold">{{ stats.value()?.moodLogDays ?? '00' }}</div>
       }
       <div class="stat-desc text-sm font-medium">Días seguidos</div>
     </div>
 
     <div class="stat bg-success/20 !border-2 !border-success/50 *:text-success justify-items-center">
       <div class="stat-title mb-2">
-        <i class="material-symbols-outlined !text-3xl">local_activity</i>
+        <i class="material-symbols-outlined !text-3xl">auto_awesome</i>
       </div>
       @if (stats.isLoading()) {
         <div class="stat-value skeleton w-12 h-5 bg-base-200 my-2"></div>
       } @else if (stats.error()) {
-        <div class="stat-value text-2xl font-bold">00h</div>
+        <div class="stat-value text-2xl font-bold">00</div>
       } @else {
-        <div class="stat-value text-2xl font-bold">15h</div>
+        <div class="stat-value text-2xl font-bold">{{ stats.value()?.blogAchievements?.countBlogs ?? '00' }}</div>
       }
-      <div class="stat-desc text-sm font-medium">Ejercicios</div>
+      <div class="stat-desc text-sm font-medium">Posts</div>
     </div>
 
     <div class="stat bg-info/20 !border-2 !border-info/50 *:text-info justify-items-center">
@@ -46,7 +46,7 @@
       } @else if (stats.error()) {
         <div class="stat-value text-2xl font-bold">00</div>
       } @else {
-        <div class="stat-value text-2xl font-bold">24</div>
+        <div class="stat-value text-2xl font-bold">{{ stats.value()?.blogAchievements?.countComments ?? '00' }}</div>
       }
       <div class="stat-desc text-sm font-medium">Comentarios</div>
     </div>
@@ -60,7 +60,7 @@
       } @else if (stats.error()) {
         <div class="stat-value text-2xl font-bold">00</div>
       } @else {
-        <div class="stat-value text-2xl font-bold">89</div>
+        <div class="stat-value text-2xl font-bold">{{ stats.value()?.blogAchievements?.countReactions ?? '00' }}</div>
       }
       <div class="stat-desc text-sm font-medium">Likes dados</div>
     </div>
