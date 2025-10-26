@@ -52,7 +52,12 @@
             <i class="material-symbols-outlined text-3xl text-primary">{{ notificationIcons[notification.type] }}</i>
             <div class="flex-grow">
               <h2 class="card-title text-base">{{ notification.title }}</h2>
-              <p class="text-sm text-base-content/70">{{ notification.message }}</p>
+              <p class="text-sm text-base-content/80 mb-2">{{ notification.message }}</p>
+              <relative-time
+                class="text-xs opacity-60"
+                datetime="{{ formatDateToISO8601(notification.createdAt) }}"
+                timeZone="America/Bogota"
+              ></relative-time>
             </div>
             @if (!notification.read) {
               <div class="w-3 h-3 rounded-full bg-primary self-start mt-1 flex-shrink-0"></div>

@@ -22,7 +22,7 @@
         </button>
       </div>
     } @else {
-      @for (mood of moods.value()!.content.slice(0, 5); track mood.id) {
+      @for (mood of moodsContent(); track mood.id) {
         <div
           class="flex gap-4 flex-1 w-full items-center justify-between p-4 rounded-2xl border-2 hover:shadow-md hover:scale-[1.01] transition-all duration-300"
           [ngClass]="{

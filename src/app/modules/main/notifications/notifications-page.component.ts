@@ -1,15 +1,17 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, CUSTOM_ELEMENTS_SCHEMA, inject, signal } from '@angular/core';
 import { Location, NgClass } from '@angular/common';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../core/services/notification.service';
 import { NOTIFICATION_TYPE_ICON, NotificationResponse, NotificationType } from '../../../core/models/notification';
+import { formatDateToISO8601 } from '../../../shared/utils/date';
 
 @Component({
   selector: 'app-notifications-page',
   templateUrl: './notifications-page.component.html',
   imports: [
     NgClass
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export default class NotificationsPageComponent {
   private notificationService = inject(NotificationService);
@@ -21,7 +23,7 @@ export default class NotificationsPageComponent {
     { type: NotificationType.LIKE, message: 'Likes' },
     { type: NotificationType.COMMENT, message: 'Comentarios' },
     { type: NotificationType.FOLLOW, message: 'Seguidores' },
-    { type: NotificationType.MOOD_ALERT, message: 'Estados de animo' },
+    { type: NotificationType.MOOD_ALERT, message: 'Estados de animo' }
 
   ];
 
@@ -55,4 +57,6 @@ export default class NotificationsPageComponent {
   goBack() {
     this.location.back();
   }
+
+  protected readonly formatDateToISO8601 = formatDateToISO8601;
 }

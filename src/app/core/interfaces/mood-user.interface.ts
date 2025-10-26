@@ -7,7 +7,8 @@ export interface UserMood {
     username: string;
     firstName: string;
     lastName: string;
-  }
+  },
+  description: string;
   mood: Content;
   recordedDate: string;
 }

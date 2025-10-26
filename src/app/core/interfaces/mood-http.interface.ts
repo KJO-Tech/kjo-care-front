@@ -1,6 +1,7 @@
 export interface MoodStateRequest {
   name: string,
   description: string,
+  value: number,
   image: string,
   color: string
 }
@@ -11,5 +12,6 @@ export interface MoodStateResponse {
   description: string,
   image: string,
   color: string,
+  value: number,
   isActive: boolean
 }
