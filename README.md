@@ -1,4 +1,5 @@
 # KJO Mind Care - Dashboard de Administración 🧠📊
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/KJO-Tech/kjo-care-front)
 
 Este dashboard fue desarrollado como parte del proyecto de bienestar emocional **KJO Mind Care**. Permite a administradores gestionar los recursos del sistema (blogs, usuarios, categorías, centros de salud, etc.) desde un entorno seguro, intuitivo y moderno.
 
